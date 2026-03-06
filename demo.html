@@ -1,0 +1,2955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W.V. Construction — Business Management</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; }
+
+  /* ===== LAYOUT ===== */
+  .app-shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; background: #0f172a; color: #cbd5e1; flex-shrink: 0; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 12px; }
+  .sidebar-logo .logo-icon { width: 36px; height: 36px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .sidebar-logo .logo-text { font-size: 15px; font-weight: 700; color: #f8fafc; line-height: 1.2; }
+  .sidebar-nav { padding: 16px 12px; flex: 1; }
+  .sidebar-nav a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; margin-bottom: 2px; }
+  .sidebar-nav a:hover { background: #1e293b; color: #e2e8f0; }
+  .sidebar-nav a.active { background: #2563eb; color: #fff; }
+  .sidebar-nav a .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid #1e293b; }
+  .sidebar-footer a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .sidebar-footer a:hover { background: #1e293b; color: #e2e8f0; }
+  .main-content { flex: 1; min-width: 0; padding: 32px; overflow-y: auto; }
+
+  /* ===== PAGES ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== LOGIN ===== */
+  .login-page { min-height: 100vh; background: #0f172a; display: flex; align-items: center; justify-content: center; }
+  .login-card { background: #fff; border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; }
+  .login-logo { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .login-logo .logo-icon { width: 56px; height: 56px; background: #2563eb; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+  .login-logo h1 { font-size: 22px; font-weight: 700; color: #0f172a; }
+  .login-logo p { font-size: 13px; color: #64748b; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+  .form-control { width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; color: #111827; background: #fff; outline: none; transition: border-color 0.15s; }
+  .form-control:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-success { background: #16a34a; color: #fff; }
+  .btn-success:hover { background: #15803d; }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .btn-danger:hover { background: #b91c1c; }
+  .btn-amber { background: #d97706; color: #fff; }
+  .btn-amber:hover { background: #b45309; }
+  .btn-purple { background: #7c3aed; color: #fff; }
+  .btn-purple:hover { background: #6d28d9; }
+  .btn-outline { background: #fff; color: #374151; border: 1px solid #d1d5db; }
+  .btn-outline:hover { background: #f9fafb; }
+  .btn-outline-blue { background: #fff; color: #2563eb; border: 1px solid #2563eb; }
+  .btn-outline-blue:hover { background: #eff6ff; }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  .btn-full { width: 100%; justify-content: center; }
+  .btn-disabled { background: #e2e8f0 !important; color: #94a3b8 !important; cursor: not-allowed !important; border-color: #e2e8f0 !important; }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  .page-title { font-size: 24px; font-weight: 700; color: #0f172a; }
+  .page-subtitle { font-size: 14px; color: #64748b; margin-top: 2px; }
+
+  /* ===== STATS CARDS ===== */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+  .stat-card .stat-label { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .stat-card .stat-value { font-size: 26px; font-weight: 700; }
+  .stat-card .stat-sub { font-size: 12px; color: #64748b; margin-top: 4px; }
+  .stat-blue .stat-value { color: #2563eb; }
+  .stat-green .stat-value { color: #16a34a; }
+  .stat-red .stat-value { color: #dc2626; }
+  .stat-amber .stat-value { color: #d97706; }
+
+  /* ===== CARDS ===== */
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+  .card-header h3 { font-size: 15px; font-weight: 600; color: #0f172a; }
+  .card-body { padding: 20px; }
+
+  /* ===== TABLE ===== */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; padding: 10px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+  .data-table td { padding: 13px 16px; font-size: 14px; color: #374151; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+  .data-table tr.clickable { cursor: pointer; }
+  .data-table tr.clickable:hover td { background: #f8fafc; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .td-ref { font-family: 'Courier New', monospace; font-size: 13px; color: #475569; font-weight: 600; }
+  .data-table .td-amount { font-weight: 600; color: #0f172a; }
+
+  /* ===== BADGES ===== */
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .badge-draft { background: #f1f5f9; color: #475569; }
+  .badge-sent { background: #dbeafe; color: #1d4ed8; }
+  .badge-accepted { background: #ccfbf1; color: #0d9488; }
+  .badge-invoiced { background: #fef3c7; color: #b45309; }
+  .badge-paid { background: #dcfce7; color: #16a34a; }
+  .badge-overdue { background: #fee2e2; color: #dc2626; }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-grey { background: #f1f5f9; color: #475569; }
+  .badge-pending { background: #fef3c7; color: #b45309; }
+
+  /* ===== FILTER CHIPS ===== */
+  .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chip { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid #e2e8f0; background: #fff; color: #64748b; transition: all 0.15s; }
+  .chip:hover { border-color: #2563eb; color: #2563eb; }
+  .chip.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+  /* ===== BACK LINK ===== */
+  .back-link { display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-size: 14px; text-decoration: none; cursor: pointer; margin-bottom: 20px; }
+  .back-link:hover { color: #2563eb; }
+
+  /* ===== INVOICE DETAIL ===== */
+  .invoice-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+  .invoice-main {}
+  .invoice-sidebar {}
+  .invoice-header-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+  .invoice-title-block .ref { font-family: 'Courier New', monospace; font-size: 13px; color: #64748b; margin-bottom: 6px; }
+  .invoice-title-block h2 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+  .invoice-badges { display: flex; gap: 8px; }
+  .invoice-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .invoice-meta-block label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; display: block; margin-bottom: 4px; }
+  .invoice-meta-block .value { font-size: 14px; color: #0f172a; font-weight: 500; }
+  .invoice-meta-block .value-sub { font-size: 13px; color: #64748b; margin-top: 2px; }
+  .line-items-table { width: 100%; border-collapse: collapse; }
+  .line-items-table th { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; padding: 10px 12px; text-align: left; border-bottom: 2px solid #e2e8f0; }
+  .line-items-table th.text-right { text-align: right; }
+  .line-items-table td { padding: 12px 12px; font-size: 14px; color: #374151; border-bottom: 1px solid #f1f5f9; }
+  .line-items-table td.text-right { text-align: right; }
+  .line-items-table tr:last-child td { border-bottom: none; }
+  .totals-block { border-top: 2px solid #e2e8f0; padding-top: 12px; margin-top: 4px; }
+  .totals-row { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 14px; }
+  .totals-row.total { font-size: 16px; font-weight: 700; color: #0f172a; border-top: 1px solid #e2e8f0; margin-top: 6px; padding-top: 10px; }
+  .invoice-notes { margin-top: 24px; padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #64748b; }
+  .action-panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+  .action-panel h4 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 14px; }
+  .action-panel .btn { width: 100%; justify-content: center; margin-bottom: 8px; }
+  .action-panel .btn:last-child { margin-bottom: 0; }
+
+  /* ===== AMENDMENT SECTION ===== */
+  .amendments-section { margin-top: 24px; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+  .amendments-section-header { padding: 14px 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+  .amendments-section-header h4 { font-size: 14px; font-weight: 600; color: #0f172a; }
+  .amendment-row { padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; }
+  .amendment-row:last-child { border-bottom: none; }
+  .amendment-info { flex: 1; }
+  .amendment-info .amend-title { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
+  .amendment-info .amend-sub { font-size: 12px; color: #64748b; }
+  .amendment-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* ===== ALERT BANNER ===== */
+  .alert { border-radius: 10px; padding: 14px 18px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+  .alert-red { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; }
+  .alert-amber { background: #fef3c7; border: 1px solid #fde68a; color: #92400e; }
+  .alert-green { background: #dcfce7; border: 1px solid #bbf7d0; color: #14532d; }
+
+  /* ===== SIGN PAGE ===== */
+  .sign-page { min-height: 100vh; background: #f1f5f9; display: flex; flex-direction: column; align-items: center; padding: 48px 20px; }
+  .sign-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+  .sign-logo .logo-icon { width: 40px; height: 40px; background: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .sign-logo span { font-size: 18px; font-weight: 700; color: #0f172a; }
+  .sign-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 36px; max-width: 640px; width: 100%; }
+  .sign-card h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+  .sign-card .sign-intro { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+  .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+  .info-box.amber { background: #fef3c7; border-color: #fde68a; }
+  .info-box label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; display: block; margin-bottom: 8px; }
+  .info-box.amber label { color: #92400e; }
+  .info-box p { font-size: 14px; color: #374151; }
+  .consent-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin: 20px 0; display: flex; gap: 12px; align-items: flex-start; }
+  .consent-box input[type=checkbox] { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; cursor: pointer; accent-color: #16a34a; }
+  .consent-box label { font-size: 13px; color: #374151; line-height: 1.5; cursor: pointer; }
+  .sign-done-card { text-align: center; }
+  .check-circle { width: 80px; height: 80px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px; }
+  .approval-details { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: left; margin-top: 20px; }
+  .approval-details .detail-row { display: flex; font-size: 13px; padding: 4px 0; }
+  .approval-details .detail-label { color: #64748b; width: 120px; flex-shrink: 0; font-weight: 500; }
+  .approval-details .detail-value { color: #0f172a; }
+
+  /* ===== NEW QUOTE FORM ===== */
+  .form-section { margin-bottom: 28px; }
+  .form-section-title { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .doc-type-toggle { display: flex; gap: 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; margin-bottom: 24px; display: inline-flex; }
+  .doc-type-toggle button { padding: 8px 20px; font-size: 14px; font-weight: 500; background: #fff; color: #64748b; border: none; cursor: pointer; }
+  .doc-type-toggle button.active { background: #2563eb; color: #fff; }
+
+  /* ===== LINE ITEMS EDITOR ===== */
+  .line-items-editor { width: 100%; border-collapse: collapse; }
+  .line-items-editor th { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; padding: 8px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+  .line-items-editor td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+  .line-items-editor input { width: 100%; padding: 7px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #374151; background: #fff; }
+  .line-items-editor input:focus { outline: none; border-color: #2563eb; }
+  .add-line-link { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: #2563eb; cursor: pointer; margin-top: 10px; text-decoration: none; }
+  .add-line-link:hover { text-decoration: underline; }
+
+  /* ===== TOAST ===== */
+  #toast-container { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+  .toast { background: #16a34a; color: #fff; padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 16px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; animation: slideIn 0.25s ease; min-width: 280px; }
+  .toast-error { background: #dc2626; }
+  @keyframes slideIn { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(40px); opacity: 0; } }
+  .toast.hiding { animation: slideOut 0.25s ease forwards; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(2px); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal-card { background: #fff; border-radius: 16px; padding: 32px; max-width: 480px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .modal-card h3 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+  .modal-card .modal-sub { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+  .link-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 13px; color: #1d4ed8; word-break: break-all; margin-bottom: 16px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ===== INFO STEPS BOX ===== */
+  .steps-box { background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 18px; margin-bottom: 24px; }
+  .steps-box h4 { font-size: 13px; font-weight: 700; color: #92400e; margin-bottom: 10px; }
+  .steps-box ol { padding-left: 20px; }
+  .steps-box ol li { font-size: 13px; color: #78350f; margin-bottom: 4px; line-height: 1.5; }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-spacer { margin-bottom: 24px; }
+
+  /* ===== CUSTOMERS TABLE ===== */
+  .customer-avatar { width: 34px; height: 34px; border-radius: 50%; background: #dbeafe; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+
+  /* ===== UTILITY ===== */
+  .text-right { text-align: right; }
+  .text-muted { color: #64748b; }
+  .font-mono { font-family: 'Courier New', monospace; }
+  .mb-0 { margin-bottom: 0; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .flex { display: flex; }
+  .items-center { align-items: center; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .font-bold { font-weight: 700; }
+  hr.divider { border: none; border-top: 1px solid #e2e8f0; margin: 24px 0; }
+
+  /* ===== OUTSTANDING PAGE ===== */
+  .outstanding-card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; margin-bottom:16px; overflow:hidden; }
+  .outstanding-card-header { padding:14px 20px; border-bottom:1px solid #e2e8f0; display:flex; align-items:flex-start; justify-content:space-between; background:#f8fafc; flex-wrap:wrap; gap:8px; }
+  .outstanding-card-body { padding:20px; }
+  .outstanding-total { font-size:22px; font-weight:800; color:#0f172a; }
+  .cash-row { display:flex; align-items:center; gap:12px; margin:14px 0; padding:12px 16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; flex-wrap:wrap; }
+  .cash-row label { font-size:13px; font-weight:600; color:#15803d; white-space:nowrap; }
+  .cash-row input { width:110px; padding:7px 10px; border:1px solid #86efac; border-radius:6px; font-size:14px; font-weight:600; color:#15803d; background:#fff; outline:none; }
+  .cash-row input:focus { border-color:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,0.15); }
+  .remaining-label { font-size:12px; color:#64748b; margin-left:auto; text-align:right; }
+  .remaining-amount { font-size:16px; font-weight:700; color:#dc2626; }
+  .outstanding-actions { display:flex; gap:10px; flex-wrap:wrap; padding-top:14px; border-top:1px solid #f1f5f9; margin-top:4px; }
+
+  /* ===== SELECT / DELETE ===== */
+  .cb-th, .cb-td { width:36px; text-align:center; padding:8px 4px !important; }
+  .row-cb { width:15px; height:15px; cursor:pointer; accent-color:#2563eb; }
+  .delete-bar { display:none; align-items:center; gap:10px; padding:10px 16px; background:#fee2e2; border:1px solid #fecaca; border-radius:8px; margin-bottom:14px; font-size:14px; color:#991b1b; }
+  .delete-bar.show { display:flex; }
+
+  /* ===== PRINT / PDF ===== */
+  @media print {
+    .page { display: none !important; }
+    .page.active { display: block !important; }
+    .sidebar, .back-link, .action-panel, .invoice-sidebar,
+    .page-header, .filter-chips, .amendments-section,
+    .alert-amber, .alert-red, .modal-overlay,
+    .add-line-link, #toast-container { display: none !important; }
+    body { background: #fff !important; }
+    .app-shell { display: block !important; }
+    .main-content { padding: 20px !important; }
+    .invoice-layout { display: block !important; }
+    .card { border: none !important; box-shadow: none !important; }
+    .card-body { padding: 0 !important; }
+    .invoice-notes { display: block !important; }
+    @page { margin: 15mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- STRIPE MODAL -->
+<div class="modal-overlay" id="stripe-modal">
+  <div class="modal-card">
+    <h3>💳 Stripe Payment Link</h3>
+    <p class="modal-sub">Share this link with your customer to collect card payment securely via Stripe.</p>
+    <div class="link-box">https://buy.stripe.com/demo_abc123xYz456</div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('stripe-modal')">Close</button>
+      <button class="btn btn-primary" onclick="copyStripeLink()">📋 Copy Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="page active" id="page-login">
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo-icon">🏗️</div>
+        <h1>W.V. Construction</h1>
+        <p>Business Management Portal</p>
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" value="admin@buildright.co.uk" placeholder="admin@buildright.co.uk">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" value="••••••••" placeholder="••••••••">
+      </div>
+      <button class="btn btn-primary btn-full" style="margin-top:8px;" onclick="navigate('dashboard')">Sign in →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DASHBOARD PAGE ==================== -->
+<div class="page" id="page-dashboard">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-subtitle">Welcome back. Here's what's happening.</div>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('new-quote')">+ New Quote</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-blue">
+          <div class="stat-label">Outstanding</div>
+          <div class="stat-value">£14,940</div>
+          <div class="stat-sub">2 invoices unpaid</div>
+        </div>
+        <div class="stat-card stat-green">
+          <div class="stat-label">Paid This Month</div>
+          <div class="stat-value">£7,200</div>
+          <div class="stat-sub">1 invoice settled</div>
+        </div>
+        <div class="stat-card stat-red">
+          <div class="stat-label">Overdue</div>
+          <div class="stat-value">1</div>
+          <div class="stat-sub">past due date</div>
+        </div>
+        <div class="stat-card stat-amber">
+          <div class="stat-label">Pending Approval</div>
+          <div class="stat-value">2</div>
+          <div class="stat-sub">awaiting customer</div>
+        </div>
+      </div>
+
+      <div class="alert alert-red" style="margin-bottom:20px;">
+        ⚠️ <strong>1 overdue invoice</strong> — Steve Harrison's bathroom renovation invoice is past its due date.
+        <span onclick="navigate('invoice-steve')" style="margin-left:8px;color:#dc2626;cursor:pointer;font-weight:600;text-decoration:underline;">View invoice →</span>
+      </div>
+
+      <div class="delete-bar" id="dash-delete-bar">
+        <span class="del-count">0 selected</span>
+        <button class="btn btn-danger btn-sm" onclick="deleteSelected('dashboard-recent-tbody','dash-delete-bar','dash-cb-all')">🗑 Delete Selected</button>
+        <span style="margin-left:auto;font-size:12px;color:#991b1b;">Click rows to select, then delete</span>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Recent Quotes &amp; Invoices</h3>
+          <a onclick="navigate('quotes-list')" style="font-size:13px;color:#2563eb;cursor:pointer;text-decoration:none;">View all →</a>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ref</th>
+              <th>Customer</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Issued</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="dashboard-recent-tbody">
+            <tr class="clickable" onclick="navigate('invoice-steve')">
+              <td class="td-ref">INV-08A96C3B</td>
+              <td>Steve Harrison</td>
+              <td>Full bathroom renovation</td>
+              <td><span class="badge badge-overdue">Overdue</span></td>
+              <td>1 Jan 2025</td>
+              <td class="text-right td-amount">£3,600</td>
+            </tr>
+            <tr class="clickable" onclick="navigate('invoice-linda')">
+              <td class="td-ref">INV-3D7F2A1E</td>
+              <td>Linda Park</td>
+              <td>Kitchen extension — rear of property</td>
+              <td><span class="badge badge-invoiced">Invoiced</span></td>
+              <td>15 Feb 2025</td>
+              <td class="text-right td-amount">£11,340</td>
+            </tr>
+            <tr class="clickable" onclick="navigate('quote-marcus')">
+              <td class="td-ref">Q-7C4A9E12</td>
+              <td>Marcus Webb</td>
+              <td>Loft conversion with dormer window</td>
+              <td><span class="badge badge-sent">Sent</span></td>
+              <td>20 Feb 2025</td>
+              <td class="text-right td-amount">£18,000</td>
+            </tr>
+            <tr class="clickable" onclick="navigate('quote-marcus')">
+              <td class="td-ref">Q-B3C4D5E6</td>
+              <td>Marcus Webb</td>
+              <td>Loft conversion with dormer window</td>
+              <td><span class="badge badge-accepted">Accepted</span></td>
+              <td>18 Feb 2025</td>
+              <td class="text-right td-amount">£18,000</td>
+            </tr>
+            <tr class="clickable" onclick="navigate('invoice-tom')">
+              <td class="td-ref">INV-F9E8D7C6</td>
+              <td>Tom Bradley</td>
+              <td>Garage conversion to office</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+              <td>5 Feb 2025</td>
+              <td class="text-right td-amount">£7,200</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUOTES LIST PAGE ==================== -->
+<div class="page" id="page-quotes-list">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Quotes &amp; Invoices</div>
+          <div class="page-subtitle">All your quotes and invoices in one place.</div>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('new-quote')">+ New Quote</button>
+      </div>
+
+      <div class="delete-bar" id="quotes-delete-bar">
+        <span class="del-count">0 selected</span>
+        <button class="btn btn-danger btn-sm" onclick="deleteSelected('quotes-tbody','quotes-delete-bar','quotes-cb-all')">🗑 Delete Selected</button>
+        <span style="margin-left:auto;font-size:12px;color:#991b1b;">Tick rows to select, then delete</span>
+      </div>
+
+      <div class="filter-chips" id="filter-chips">
+        <span class="chip active" onclick="setFilter('all', this)">All</span>
+        <span class="chip" onclick="setFilter('draft', this)">Drafts</span>
+        <span class="chip" onclick="setFilter('sent', this)">Sent</span>
+        <span class="chip" onclick="setFilter('accepted', this)">Accepted</span>
+        <span class="chip" onclick="setFilter('invoiced', this)">Invoiced</span>
+        <span class="chip" onclick="setFilter('paid', this)">Paid</span>
+        <span class="chip" onclick="setFilter('overdue', this)">Overdue</span>
+      </div>
+
+      <div class="card">
+        <table class="data-table" id="quotes-table">
+          <thead>
+            <tr>
+              <th>Ref</th>
+              <th>Customer</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Issued</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="quotes-tbody">
+            <tr class="clickable" data-status="overdue" onclick="navigate('invoice-steve')">
+              <td class="td-ref">INV-08A96C3B</td>
+              <td>Steve Harrison</td>
+              <td>Full bathroom renovation — 12 Oak Ave</td>
+              <td><span class="badge badge-grey">Invoice</span></td>
+              <td><span class="badge badge-overdue">Overdue</span></td>
+              <td>1 Jan 2025</td>
+              <td class="text-right td-amount">£3,600</td>
+            </tr>
+            <tr class="clickable" data-status="invoiced" onclick="navigate('invoice-linda')">
+              <td class="td-ref">INV-3D7F2A1E</td>
+              <td>Linda Park</td>
+              <td>Kitchen extension — rear of property</td>
+              <td><span class="badge badge-grey">Invoice</span></td>
+              <td id="linda-status-chip"><span class="badge badge-invoiced">Invoiced</span></td>
+              <td>15 Feb 2025</td>
+              <td class="text-right td-amount">£11,340</td>
+            </tr>
+            <tr class="clickable" data-status="sent" onclick="navigate('quote-marcus')">
+              <td class="td-ref">Q-7C4A9E12</td>
+              <td>Marcus Webb</td>
+              <td>Loft conversion with dormer window</td>
+              <td><span class="badge badge-blue">Quote</span></td>
+              <td id="marcus-status-chip"><span class="badge badge-sent">Sent</span></td>
+              <td>20 Feb 2025</td>
+              <td class="text-right td-amount">£18,000</td>
+            </tr>
+            <tr class="clickable" data-status="accepted" onclick="navigate('quote-marcus')">
+              <td class="td-ref">Q-B3C4D5E6</td>
+              <td>Marcus Webb</td>
+              <td>Loft conversion with dormer window</td>
+              <td><span class="badge badge-blue">Quote</span></td>
+              <td><span class="badge badge-accepted">Accepted</span></td>
+              <td>18 Feb 2025</td>
+              <td class="text-right td-amount">£18,000</td>
+            </tr>
+            <tr class="clickable" data-status="draft" onclick="navigate('quote-julie')">
+              <td class="td-ref">Q-A1B2C3D4</td>
+              <td>Julie Thornton</td>
+              <td>Driveway resurfacing &amp; new gate install</td>
+              <td><span class="badge badge-blue">Quote</span></td>
+              <td><span class="badge badge-draft">Draft</span></td>
+              <td>27 Feb 2025</td>
+              <td class="text-right td-amount">£2,850</td>
+            </tr>
+            <tr class="clickable" data-status="paid" onclick="navigate('invoice-tom')">
+              <td class="td-ref">INV-F9E8D7C6</td>
+              <td>Tom Bradley</td>
+              <td>Garage conversion to office</td>
+              <td><span class="badge badge-grey">Invoice</span></td>
+              <td><span class="badge badge-paid">Paid</span></td>
+              <td>5 Feb 2025</td>
+              <td class="text-right td-amount">£7,200</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== INVOICE LINDA PAGE ==================== -->
+<div class="page" id="page-invoice-linda">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">← Back to list</a>
+
+      <div class="invoice-layout">
+        <div class="invoice-main">
+          <div class="card">
+            <div class="card-body">
+              <div class="invoice-header-row">
+                <div class="invoice-title-block">
+                  <div class="ref">INV-3D7F2A1E</div>
+                  <h2>Kitchen extension — rear of property</h2>
+                  <div class="invoice-badges">
+                    <span class="badge badge-grey">Invoice</span>
+                    <span id="linda-detail-badge" class="badge badge-invoiced">Invoiced</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="invoice-meta-grid">
+                <div class="invoice-meta-block">
+                  <label>Bill To</label>
+                  <div class="value">Linda Park</div>
+                  <div class="value-sub">linda.park@email.com</div>
+                  <div class="value-sub">07700 900123</div>
+                  <div class="value-sub">45 Maple Street, London SE1 7PQ</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Invoice Dates</label>
+                  <div class="value">Issued: 15 Feb 2025</div>
+                  <div class="value-sub">Due: 17 Mar 2025</div>
+                </div>
+              </div>
+
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Labour — structural work &amp; foundations</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£3,500.00</td>
+                    <td class="text-right">£3,500.00</td>
+                  </tr>
+                  <tr>
+                    <td>Materials — brick, cement, insulation</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£2,800.00</td>
+                    <td class="text-right">£2,800.00</td>
+                  </tr>
+                  <tr>
+                    <td>Glazing — bi-fold doors (3-panel)</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£2,200.00</td>
+                    <td class="text-right">£2,200.00</td>
+                  </tr>
+                  <tr>
+                    <td>Electrical — new ring &amp; sockets</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£950.00</td>
+                    <td class="text-right">£950.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="totals-block">
+                <div class="totals-row"><span class="text-muted">Subtotal</span><span>£9,450.00</span></div>
+                <div class="totals-row"><span class="text-muted">VAT (20%)</span><span>£1,890.00</span></div>
+                <div class="totals-row total"><span>Total</span><span>£11,340.00</span></div>
+              </div>
+
+              <div class="invoice-notes">
+                📝 <strong>Notes:</strong> Payment due within 30 days of invoice date. Bank transfer preferred — BACS details: W.V. Construction, Sort: 20-00-00, Acc: 12345678. Please quote invoice reference when paying.
+              </div>
+
+              <!-- AMENDMENTS SECTION (shown when amendment sent) -->
+              <div class="amendments-section" id="linda-amendments" style="display:none;">
+                <div class="amendments-section-header">
+                  <h4>Amendments</h4>
+                  <span class="badge badge-pending">1 Pending</span>
+                </div>
+                <div class="amendment-row">
+                  <div class="amendment-info">
+                    <div class="amend-title">Additional tiling &amp; plastering works</div>
+                    <div class="amend-sub">Sent 1 Mar 2025 · +£1,524.00 (inc. VAT) · Awaiting customer signature</div>
+                  </div>
+                  <div class="amendment-actions">
+                    <span class="badge badge-pending">Pending Approval</span>
+                    <button class="btn btn-outline btn-sm" onclick="navigate('sign')">Preview signing page</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-sidebar">
+          <div class="action-panel">
+            <h4>Actions</h4>
+            <button class="btn btn-primary" onclick="sendByEmail('linda.park@email.com','Linda Park','INV-3D7F2A1E',11340)">✉ Send Invoice</button>
+            <button class="btn btn-outline" onclick="toast('Payment reminder sent to linda.park@email.com 🔔')">🔔 Send Reminder</button>
+            <button class="btn btn-purple" onclick="openModal('stripe-modal')">💳 Generate Payment Link</button>
+            <button class="btn btn-success" id="linda-paid-btn" onclick="markLindaPaid()">✓ Mark as Paid</button>
+            <button class="btn btn-amber" onclick="navigate('amendment-form')">✏ Add Amendment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== INVOICE STEVE PAGE ==================== -->
+<div class="page" id="page-invoice-steve">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">← Back to list</a>
+
+      <div class="alert alert-red" style="margin-bottom:20px;">
+        ⚠️ <strong>Overdue</strong> — This invoice was due on 1 Feb 2025. Payment has not been received.
+      </div>
+
+      <div class="invoice-layout">
+        <div class="invoice-main">
+          <div class="card">
+            <div class="card-body">
+              <div class="invoice-header-row">
+                <div class="invoice-title-block">
+                  <div class="ref">INV-08A96C3B</div>
+                  <h2>Full bathroom renovation — 12 Oak Avenue</h2>
+                  <div class="invoice-badges">
+                    <span class="badge badge-grey">Invoice</span>
+                    <span id="steve-detail-badge" class="badge badge-overdue">Overdue</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="invoice-meta-grid">
+                <div class="invoice-meta-block">
+                  <label>Bill To</label>
+                  <div class="value">Steve Harrison</div>
+                  <div class="value-sub">s.harrison@email.com</div>
+                  <div class="value-sub">07700 112233</div>
+                  <div class="value-sub">12 Oak Avenue, Manchester M1 2AB</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Invoice Dates</label>
+                  <div class="value">Issued: 1 Jan 2025</div>
+                  <div class="value-sub" style="color:#dc2626;font-weight:600;">Due: 1 Feb 2025 (OVERDUE)</div>
+                </div>
+              </div>
+
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Labour — full bathroom strip-out &amp; replaster</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£800.00</td>
+                    <td class="text-right">£800.00</td>
+                  </tr>
+                  <tr>
+                    <td>New bathroom suite supply &amp; fit</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£1,400.00</td>
+                    <td class="text-right">£1,400.00</td>
+                  </tr>
+                  <tr>
+                    <td>Tiling — floor &amp; walls</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£800.00</td>
+                    <td class="text-right">£800.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="totals-block">
+                <div class="totals-row"><span class="text-muted">Subtotal</span><span>£3,000.00</span></div>
+                <div class="totals-row"><span class="text-muted">VAT (20%)</span><span>£600.00</span></div>
+                <div class="totals-row total"><span>Total</span><span>£3,600.00</span></div>
+              </div>
+
+              <div class="invoice-notes">
+                📝 <strong>Notes:</strong> Payment due within 30 days of invoice date. Please contact us immediately if there are any queries regarding this invoice. Late payment may incur additional charges.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-sidebar">
+          <div class="action-panel">
+            <h4>Actions</h4>
+            <button class="btn btn-primary" onclick="sendByEmail('s.harrison@email.com','Steve Harrison','INV-08A96C3B',3600)">✉ Send Invoice</button>
+            <button class="btn btn-outline" onclick="toast('Payment reminder sent to s.harrison@email.com 🔔')">🔔 Send Reminder</button>
+            <button class="btn btn-purple" onclick="openModal('stripe-modal')">💳 Generate Payment Link</button>
+            <button class="btn btn-success" id="steve-paid-btn" onclick="markStevePaid()">✓ Mark as Paid</button>
+            <button class="btn btn-amber" onclick="navigate('amendment-form')">✏ Add Amendment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUOTE MARCUS PAGE ==================== -->
+<div class="page" id="page-quote-marcus">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">← Back to list</a>
+
+      <div class="invoice-layout">
+        <div class="invoice-main">
+          <div class="card">
+            <div class="card-body">
+              <div class="invoice-header-row">
+                <div class="invoice-title-block">
+                  <div class="ref">Q-7C4A9E12</div>
+                  <h2>Loft conversion with dormer window</h2>
+                  <div class="invoice-badges">
+                    <span class="badge badge-blue">Quote</span>
+                    <span id="marcus-detail-badge" class="badge badge-sent">Sent</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="invoice-meta-grid">
+                <div class="invoice-meta-block">
+                  <label>Prepared For</label>
+                  <div class="value">Marcus Webb</div>
+                  <div class="value-sub">m.webb@email.com</div>
+                  <div class="value-sub">07700 445566</div>
+                  <div class="value-sub">22 Birch Lane, Leeds LS1 3CD</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Quote Date</label>
+                  <div class="value">Issued: 20 Feb 2025</div>
+                  <div class="value-sub">Valid for 30 days</div>
+                </div>
+              </div>
+
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Labour — loft structural conversion</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£7,000.00</td>
+                    <td class="text-right">£7,000.00</td>
+                  </tr>
+                  <tr>
+                    <td>Dormer window supply &amp; fit</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£4,500.00</td>
+                    <td class="text-right">£4,500.00</td>
+                  </tr>
+                  <tr>
+                    <td>Insulation &amp; boarding</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£2,000.00</td>
+                    <td class="text-right">£2,000.00</td>
+                  </tr>
+                  <tr>
+                    <td>Joinery &amp; finishing</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">£1,500.00</td>
+                    <td class="text-right">£1,500.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="totals-block">
+                <div class="totals-row"><span class="text-muted">Subtotal</span><span>£15,000.00</span></div>
+                <div class="totals-row"><span class="text-muted">VAT (20%)</span><span>£3,000.00</span></div>
+                <div class="totals-row total"><span>Total</span><span>£18,000.00</span></div>
+              </div>
+
+              <div class="invoice-notes">
+                📝 <strong>Notes:</strong> This quote is valid for 30 days from issue date. Works subject to structural survey and planning permission approval. All prices include VAT at 20%.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-sidebar">
+          <div class="action-panel">
+            <h4>Actions</h4>
+            <button class="btn btn-primary" onclick="sendByEmail('m.webb@email.com','Marcus Webb','Q-7C4A9E12',18000)">✉ Send Quote</button>
+            <button class="btn btn-success" id="marcus-accept-btn" onclick="markMarcusAccepted()">✓ Mark as Accepted</button>
+            <button class="btn btn-amber" onclick="navigate('amendment-form')">✏ Add Amendment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== AMENDMENT FORM PAGE ==================== -->
+<div class="page" id="page-amendment-form">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('invoice-linda')">← Back to invoice</a>
+
+      <div style="max-width:720px;">
+        <div class="page-header" style="margin-bottom:8px;">
+          <div>
+            <div class="page-title">Add Amendment</div>
+            <div class="page-subtitle">Add extra work or materials. An approval email will be sent to the customer for e-signing.</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <span class="badge badge-grey">INV-3D7F2A1E</span>
+          <span style="color:#64748b;font-size:13px;margin-left:8px;">Kitchen extension — Linda Park</span>
+        </div>
+
+        <div class="steps-box">
+          <h4>How the amendment approval process works</h4>
+          <ol>
+            <li>Enter the additional works and costs below</li>
+            <li>Click "Send for Approval" — an email is sent to the customer with a secure link</li>
+            <li>The customer reviews the amendment and e-signs via the link in their email</li>
+            <li>Once approved, the amendment is added to the job total and recorded with a legal timestamp</li>
+          </ol>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-body">
+            <div class="form-section">
+              <div class="form-section-title">Summary of changes</div>
+              <textarea class="form-control" rows="4" style="resize:vertical;">Customer has requested additional hallway tiling and plastering works to the master bedroom wall following discovery of damp. All materials and labour included in the quoted figures below.</textarea>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title">Additional line items</div>
+              <table class="line-items-editor">
+                <thead>
+                  <tr>
+                    <th style="width:50%;">Description</th>
+                    <th class="text-right" style="width:15%;">Qty</th>
+                    <th class="text-right" style="width:25%;">Unit Price</th>
+                    <th class="text-right" style="width:10%;"></th>
+                  </tr>
+                </thead>
+                <tbody id="amendment-lines">
+                  <tr>
+                    <td><input type="text" value="Tiling — hallway floor (15m²)"></td>
+                    <td><input type="number" value="1" style="text-align:right;"></td>
+                    <td><input type="text" value="£850.00" style="text-align:right;"></td>
+                    <td style="text-align:center;"><span style="color:#94a3b8;cursor:pointer;font-size:16px;" onclick="removeAmendmentLine(this)">✕</span></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" value="Plastering — bedroom wall (6m²)"></td>
+                    <td><input type="number" value="1" style="text-align:right;"></td>
+                    <td><input type="text" value="£420.00" style="text-align:right;"></td>
+                    <td style="text-align:center;"><span style="color:#94a3b8;cursor:pointer;font-size:16px;" onclick="removeAmendmentLine(this)">✕</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <a class="add-line-link" onclick="addAmendmentLine()">+ Add line</a>
+
+              <div style="margin-top:20px;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
+                <div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:4px;"><span>Subtotal (ex. VAT)</span><span>£1,270.00</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:8px;"><span>VAT (20%)</span><span>£254.00</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:#0f172a;border-top:1px solid #e2e8f0;padding-top:8px;"><span>Amendment Total</span><span>£1,524.00</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-amber" style="padding:12px 28px;" onclick="sendAmendment()">Send for Approval →</button>
+          <button class="btn btn-outline" onclick="navigate('invoice-linda')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CUSTOMER SIGN PAGE ==================== -->
+<div class="page" id="page-sign">
+  <div class="sign-page">
+    <div class="sign-logo">
+      <div class="logo-icon">🏗️</div>
+      <span>W.V. Construction</span>
+    </div>
+
+    <div class="sign-card">
+      <h2>Amendment Approval Required</h2>
+      <p class="sign-intro">W.V. Construction has proposed additional work on your job. Please review the details carefully and approve if you agree to proceed.</p>
+
+      <div class="info-box" style="margin-bottom:16px;">
+        <label>Job Details</label>
+        <p><strong>Kitchen extension — rear of property</strong></p>
+        <p style="margin-top:4px;color:#64748b;font-size:13px;">Customer: Linda Park &nbsp;|&nbsp; Ref: INV-3D7F2A1E</p>
+      </div>
+
+      <div class="info-box amber">
+        <label>Summary of Changes</label>
+        <p>Customer has requested additional hallway tiling and plastering works to the master bedroom wall following discovery of damp. All materials and labour included in the quoted figures below.</p>
+      </div>
+
+      <div style="margin-top:20px;margin-bottom:8px;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:10px;">Additional Works</div>
+        <table class="line-items-table" style="margin-bottom:0;">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th class="text-right">Qty</th>
+              <th class="text-right">Unit Price</th>
+              <th class="text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tiling — hallway floor (15m²)</td>
+              <td class="text-right">1</td>
+              <td class="text-right">£850.00</td>
+              <td class="text-right">£850.00</td>
+            </tr>
+            <tr>
+              <td>Plastering — bedroom wall (6m²)</td>
+              <td class="text-right">1</td>
+              <td class="text-right">£420.00</td>
+              <td class="text-right">£420.00</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="totals-block" style="max-width:300px;margin-left:auto;">
+          <div class="totals-row"><span class="text-muted">Subtotal</span><span>£1,270.00</span></div>
+          <div class="totals-row"><span class="text-muted">VAT (20%)</span><span>£254.00</span></div>
+          <div class="totals-row"><span class="text-muted">Amendment total</span><span>£1,524.00</span></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:6px;"><span>Original invoice total</span><span>£11,340.00</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#16a34a;font-weight:600;margin-bottom:6px;"><span>Additional works</span><span>+ £1,524.00</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:#0f172a;border-top:1px solid #e2e8f0;padding-top:10px;"><span>New total</span><span>£12,864.00</span></div>
+      </div>
+
+      <div class="consent-box">
+        <input type="checkbox" id="consent-check" onchange="toggleApproveBtn()">
+        <label for="consent-check">I, <strong>Linda Park</strong>, confirm that I have read and understood the additional works described above. I agree to the additional cost of <strong>£1,524.00 (inc. VAT)</strong> and authorise W.V. Construction to proceed with the work. I understand this constitutes a legally binding agreement.</label>
+      </div>
+
+      <button class="btn btn-success btn-full btn-disabled" id="approve-btn" style="padding:14px;font-size:15px;" disabled onclick="navigate('sign-done')">
+        ✓ I Approve This Amendment
+      </button>
+
+      <p style="font-size:12px;color:#94a3b8;margin-top:12px;text-align:center;">
+        Your IP address and timestamp will be recorded as proof of approval.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SIGN DONE PAGE ==================== -->
+<div class="page" id="page-sign-done">
+  <div class="sign-page">
+    <div class="sign-logo">
+      <div class="logo-icon">🏗️</div>
+      <span>W.V. Construction</span>
+    </div>
+
+    <div class="sign-card sign-done-card">
+      <div class="check-circle">✓</div>
+      <h2 style="font-size:24px;">Amendment Approved</h2>
+      <p class="sign-intro">Thank you, Linda. Your approval has been securely recorded and W.V. Construction has been notified.</p>
+
+      <div class="approval-details">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:12px;">Approval Details</div>
+        <div class="detail-row">
+          <span class="detail-label">Approved by</span>
+          <span class="detail-value">Linda Park</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">linda.park@email.com</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Timestamp</span>
+          <span class="detail-value" id="approval-timestamp">1 Mar 2025, 14:32:07 UTC</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">IP Address</span>
+          <span class="detail-value">86.12.45.203</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Reference</span>
+          <span class="detail-value font-mono">AMD-INV-3D7F2A1E-001</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Amount approved</span>
+          <span class="detail-value" style="color:#16a34a;font-weight:600;">£1,524.00 (inc. VAT)</span>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:#64748b;margin-top:16px;line-height:1.5;">
+        A confirmation email has been sent to linda.park@email.com. Please keep this for your records. You may now close this page.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== NEW QUOTE FORM PAGE ==================== -->
+<div class="page" id="page-new-quote">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">← Back</a>
+
+      <div class="page-header" style="margin-bottom:24px;">
+        <div class="page-title">New Quote / Invoice</div>
+      </div>
+
+      <div style="max-width:760px;">
+        <div class="form-section">
+          <div class="form-section-title">Document type</div>
+          <div class="doc-type-toggle">
+            <button class="active" id="type-quote" onclick="setDocType('quote')">Quote</button>
+            <button id="type-invoice" onclick="setDocType('invoice')">Invoice</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-body">
+            <div class="form-section">
+              <div class="form-section-title">Customer details</div>
+              <div class="form-grid" style="margin-bottom:12px;">
+                <div class="form-group mb-0">
+                  <label>Customer name</label>
+                  <input type="text" class="form-control" value="Marcus Webb">
+                </div>
+                <div class="form-group mb-0">
+                  <label>Email address</label>
+                  <input type="email" class="form-control" value="m.webb@email.com">
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="form-group mb-0">
+                  <label>Phone number</label>
+                  <input type="tel" class="form-control" value="07700 445566">
+                </div>
+                <div class="form-group mb-0">
+                  <label>Address</label>
+                  <input type="text" class="form-control" value="22 Birch Lane, Leeds LS1 3CD">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title">Line items</div>
+              <table class="line-items-editor">
+                <thead>
+                  <tr>
+                    <th style="width:50%;">Description</th>
+                    <th class="text-right" style="width:12%;">Qty</th>
+                    <th class="text-right" style="width:22%;">Unit Price</th>
+                    <th class="text-right" style="width:16%;">Total</th>
+                    <th style="width:5%;"></th>
+                  </tr>
+                </thead>
+                <tbody id="new-quote-lines">
+                  <tr>
+                    <td style="position:relative;"><input type="text" value="Loft conversion structural &amp; joinery" style="padding-right:34px;" onblur="autoElaborate(this)"><span title="Expand description" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:15px;opacity:0.5;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5" onclick="expandDescription(this.previousElementSibling)">✨</span></td>
+                    <td><input type="number" value="1" style="text-align:right;" oninput="recalcNewQuoteTotals()"></td>
+                    <td><input type="text" value="£12,500.00" style="text-align:right;" oninput="recalcNewQuoteTotals()"></td>
+                    <td class="line-total" style="text-align:right;font-size:14px;font-weight:500;color:#374151;">£12,500.00</td>
+                    <td style="text-align:center;"><span style="color:#94a3b8;cursor:pointer;font-size:16px;" onclick="removeNewLine(this)">✕</span></td>
+                  </tr>
+                  <tr>
+                    <td style="position:relative;"><input type="text" value="Dormer window supply &amp; fit" style="padding-right:34px;" onblur="autoElaborate(this)"><span title="Expand description" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:15px;opacity:0.5;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5" onclick="expandDescription(this.previousElementSibling)">✨</span></td>
+                    <td><input type="number" value="1" style="text-align:right;" oninput="recalcNewQuoteTotals()"></td>
+                    <td><input type="text" value="£3,500.00" style="text-align:right;" oninput="recalcNewQuoteTotals()"></td>
+                    <td class="line-total" style="text-align:right;font-size:14px;font-weight:500;color:#374151;">£3,500.00</td>
+                    <td style="text-align:center;"><span style="color:#94a3b8;cursor:pointer;font-size:16px;" onclick="removeNewLine(this)">✕</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <a class="add-line-link" onclick="addNewLine()">+ Add line</a><button class="btn btn-outline btn-sm" style="margin-left:16px;color:#7c3aed;border-color:#7c3aed;padding:5px 12px;font-size:12px;" onclick="elaborateAll()">✨ Elaborate All Items</button>
+
+              <div style="margin-top:20px;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;max-width:340px;margin-left:auto;">
+                <div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:4px;"><span>Subtotal</span><span id="nq-subtotal">£16,000.00</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:8px;"><span>VAT (20%)</span><span id="nq-vat">£3,200.00</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:#0f172a;border-top:1px solid #e2e8f0;padding-top:8px;"><span>Total</span><span id="nq-total">£19,200.00</span></div>
+              </div>
+            </div>
+
+            <div class="form-section mb-0">
+              <div class="form-section-title">Notes</div>
+              <textarea class="form-control" rows="3" placeholder="Payment terms, special instructions...">This quote is valid for 30 days from issue date. Works subject to structural survey. All prices include VAT at 20%.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-primary" style="padding:12px 28px;" onclick="saveQuote()">Save Quote</button>
+          <button class="btn btn-outline" onclick="navigate('quotes-list')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CUSTOMERS PAGE ==================== -->
+<div class="page" id="page-customers">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a class="active" onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Customers</div>
+          <div class="page-subtitle">Manage your customer database.</div>
+        </div>
+        <button class="btn btn-primary" onclick="toast('New customer form coming soon')">+ New Customer</button>
+      </div>
+
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Quotes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="customer-avatar">LP</div>
+                  <span style="font-weight:600;">Linda Park</span>
+                </div>
+              </td>
+              <td style="color:#2563eb;">linda.park@email.com</td>
+              <td>07700 900123</td>
+              <td>45 Maple Street, London SE1 7PQ</td>
+              <td><span class="badge badge-invoiced">1 Invoice</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="toast('Customer profile coming soon')">View</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="customer-avatar" style="background:#fee2e2;color:#dc2626;">SH</div>
+                  <span style="font-weight:600;">Steve Harrison</span>
+                </div>
+              </td>
+              <td style="color:#2563eb;">s.harrison@email.com</td>
+              <td>07700 112233</td>
+              <td>12 Oak Avenue, Manchester M1 2AB</td>
+              <td><span class="badge badge-overdue">1 Overdue</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="toast('Customer profile coming soon')">View</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="customer-avatar" style="background:#ccfbf1;color:#0d9488;">MW</div>
+                  <span style="font-weight:600;">Marcus Webb</span>
+                </div>
+              </td>
+              <td style="color:#2563eb;">m.webb@email.com</td>
+              <td>07700 445566</td>
+              <td>22 Birch Lane, Leeds LS1 3CD</td>
+              <td><span class="badge badge-sent">2 Quotes</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="toast('Customer profile coming soon')">View</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="customer-avatar" style="background:#f1f5f9;color:#475569;">JT</div>
+                  <span style="font-weight:600;">Julie Thornton</span>
+                </div>
+              </td>
+              <td style="color:#2563eb;">j.thornton@email.com</td>
+              <td>07700 778899</td>
+              <td>8 Cedar Road, Bristol BS1 4EF</td>
+              <td><span class="badge badge-draft">1 Draft</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="toast('Customer profile coming soon')">View</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="customer-avatar" style="background:#dcfce7;color:#16a34a;">TB</div>
+                  <span style="font-weight:600;">Tom Bradley</span>
+                </div>
+              </td>
+              <td style="color:#2563eb;">tom.b@email.com</td>
+              <td>07700 990011</td>
+              <td>5 Elm Close, Birmingham B1 5GH</td>
+              <td><span class="badge badge-paid">1 Paid</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="toast('Customer profile coming soon')">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+const state = {
+  page: 'login',
+  filter: 'all',
+  lindaPaid: false,
+  stevePaid: false,
+  marcusAccepted: false,
+  amendmentSent: false
+};
+
+// ===== NAVIGATION =====
+function navigate(page) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Show target page
+  const target = document.getElementById('page-' + page);
+  if (target) {
+    target.classList.add('active');
+    state.page = page;
+    window.scrollTo(0, 0);
+  }
+
+  // Restore state-based UI
+  if (page === 'invoice-linda') {
+    restoreLindaState();
+  }
+  if (page === 'invoice-steve') {
+    restoreStevePaidState();
+  }
+  if (page === 'quote-marcus') {
+    restoreMarcusState();
+  }
+  if (page === 'quotes-list') {
+    // re-apply filter
+    applyFilter(state.filter);
+    // update linda status chip
+    if (state.lindaPaid) {
+      const chip = document.getElementById('linda-status-chip');
+      if (chip) chip.innerHTML = '<span class="badge badge-paid">Paid</span>';
+    }
+    if (state.marcusAccepted) {
+      const chip = document.getElementById('marcus-status-chip');
+      if (chip) chip.innerHTML = '<span class="badge badge-accepted">Accepted</span>';
+    }
+  }
+  if (page === 'sign') {
+    // reset consent checkbox
+    const cb = document.getElementById('consent-check');
+    if (cb) cb.checked = false;
+    const btn = document.getElementById('approve-btn');
+    if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); }
+  }
+  if (page === 'saved-quote') {
+    renderSavedQuote();
+  }
+  if (page === 'outstanding') {
+    renderOutstandingPage();
+  }
+  if (page === 'dashboard') {
+    initTableCheckboxes('dashboard-recent-tbody', 'dash-delete-bar', 'dash-cb-all');
+  }
+  if (page === 'quotes-list') {
+    initTableCheckboxes('quotes-tbody', 'quotes-delete-bar', 'quotes-cb-all');
+  }
+  if (page === 'sign-done') {
+    // set timestamp
+    const ts = document.getElementById('approval-timestamp');
+    if (ts) {
+      const now = new Date();
+      ts.textContent = now.toUTCString().replace('GMT', 'UTC');
+    }
+  }
+  if (page === 'ai-generation') {
+    // Reset UI to initial state each visit (keep captured photo / variations if returning from finalise)
+    var startBtn = document.getElementById('ai-start-btn');
+    var captureBtn = document.getElementById('ai-capture-btn');
+    var retakeBtn = document.getElementById('ai-retake-btn');
+    var placeholder = document.getElementById('ai-camera-placeholder');
+    var video = document.getElementById('ai-video');
+    var canvas = document.getElementById('ai-canvas');
+    if (aiState.capturedDataUrl && canvas) {
+      // Already have a photo — keep it shown
+      if (canvas) canvas.style.display = 'block';
+      if (video) video.style.display = 'none';
+      if (placeholder) placeholder.style.display = 'none';
+      if (startBtn) startBtn.style.display = 'none';
+      if (captureBtn) captureBtn.style.display = 'none';
+      if (retakeBtn) retakeBtn.style.display = '';
+    }
+  }
+}
+
+function restoreLindaState() {
+  // Mark as Paid state
+  const btn = document.getElementById('linda-paid-btn');
+  const badge = document.getElementById('linda-detail-badge');
+  if (state.lindaPaid) {
+    if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); btn.textContent = '✓ Paid'; }
+    if (badge) { badge.className = 'badge badge-paid'; badge.textContent = 'Paid'; }
+  } else {
+    if (btn) { btn.disabled = false; btn.classList.remove('btn-disabled'); btn.classList.add('btn-success'); btn.textContent = '✓ Mark as Paid'; }
+    if (badge) { badge.className = 'badge badge-invoiced'; badge.textContent = 'Invoiced'; }
+  }
+  // Amendment state
+  const amendSection = document.getElementById('linda-amendments');
+  if (amendSection) {
+    amendSection.style.display = state.amendmentSent ? 'block' : 'none';
+  }
+}
+
+function restoreStevePaidState() {
+  const btn = document.getElementById('steve-paid-btn');
+  const badge = document.getElementById('steve-detail-badge');
+  if (state.stevePaid) {
+    if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); btn.textContent = '✓ Paid'; }
+    if (badge) { badge.className = 'badge badge-paid'; badge.textContent = 'Paid'; }
+  } else {
+    if (btn) { btn.disabled = false; btn.classList.remove('btn-disabled'); btn.classList.add('btn-success'); btn.textContent = '✓ Mark as Paid'; }
+    if (badge) { badge.className = 'badge badge-overdue'; badge.textContent = 'Overdue'; }
+  }
+}
+
+function restoreMarcusState() {
+  const btn = document.getElementById('marcus-accept-btn');
+  const badge = document.getElementById('marcus-detail-badge');
+  if (state.marcusAccepted) {
+    if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); btn.textContent = '✓ Accepted'; }
+    if (badge) { badge.className = 'badge badge-accepted'; badge.textContent = 'Accepted'; }
+  }
+}
+
+// ===== FILTER =====
+function setFilter(filter, el) {
+  state.filter = filter;
+  // update chips
+  document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  applyFilter(filter);
+}
+
+function applyFilter(filter) {
+  const rows = document.querySelectorAll('#quotes-table tbody tr');
+  rows.forEach(row => {
+    if (filter === 'all') {
+      row.style.display = '';
+    } else {
+      const rowStatus = row.getAttribute('data-status');
+      row.style.display = (rowStatus === filter) ? '' : 'none';
+    }
+  });
+}
+
+// ===== MARK AS PAID / ACTIONS =====
+function markLindaPaid() {
+  state.lindaPaid = true;
+  const btn = document.getElementById('linda-paid-btn');
+  const badge = document.getElementById('linda-detail-badge');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); btn.textContent = '✓ Paid'; }
+  if (badge) { badge.className = 'badge badge-paid'; badge.textContent = 'Paid'; }
+  toast('Invoice marked as paid ✓');
+}
+
+function markStevePaid() {
+  state.stevePaid = true;
+  const btn = document.getElementById('steve-paid-btn');
+  const badge = document.getElementById('steve-detail-badge');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); btn.textContent = '✓ Paid'; }
+  if (badge) { badge.className = 'badge badge-paid'; badge.textContent = 'Paid'; }
+  toast('Invoice marked as paid ✓');
+}
+
+function markMarcusAccepted() {
+  state.marcusAccepted = true;
+  const btn = document.getElementById('marcus-accept-btn');
+  const badge = document.getElementById('marcus-detail-badge');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-disabled'); btn.classList.remove('btn-success'); btn.textContent = '✓ Accepted'; }
+  if (badge) { badge.className = 'badge badge-accepted'; badge.textContent = 'Accepted'; }
+  toast('Quote marked as accepted ✓');
+}
+
+// ===== AMENDMENT =====
+function sendAmendment() {
+  state.amendmentSent = true;
+  toast('Amendment sent to linda.park@email.com for approval ✓');
+  setTimeout(() => navigate('invoice-linda'), 600);
+}
+
+function addAmendmentLine() {
+  const tbody = document.getElementById('amendment-lines');
+  if (!tbody) return;
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td><input type="text" placeholder="Description"></td>' +
+    '<td><input type="number" value="1" style="text-align:right;"></td>' +
+    '<td><input type="text" placeholder="£0.00" style="text-align:right;"></td>' +
+    '<td style="text-align:center;"><span style="color:#94a3b8;cursor:pointer;font-size:16px;" onclick="removeAmendmentLine(this)">✕</span></td>';
+  tbody.appendChild(tr);
+}
+
+function removeAmendmentLine(el) {
+  const row = el.closest('tr');
+  if (row) row.remove();
+}
+
+// ===== NEW QUOTE FORM =====
+function addNewLine() {
+  const tbody = document.getElementById('new-quote-lines');
+  if (!tbody) return;
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td style="position:relative;"><input type="text" placeholder="Description" style="padding-right:34px;" onblur="autoElaborate(this)"><span title="Expand description" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:15px;opacity:0.5;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5" onclick="expandDescription(this.previousElementSibling)">✨</span></td>' +
+    '<td><input type="number" value="1" style="text-align:right;" oninput="recalcNewQuoteTotals()"></td>' +
+    '<td><input type="text" placeholder="£0.00" style="text-align:right;" oninput="recalcNewQuoteTotals()"></td>' +
+    '<td class="line-total" style="text-align:right;font-size:14px;font-weight:500;color:#374151;">\u2014</td>' +
+    '<td style="text-align:center;"><span style="color:#94a3b8;cursor:pointer;font-size:16px;" onclick="removeNewLine(this)">✕</span></td>';
+  tbody.appendChild(tr);
+}
+
+function removeNewLine(el) {
+  const row = el.closest('tr');
+  if (row) { row.remove(); recalcNewQuoteTotals(); }
+}
+
+function setDocType(type) {
+  const qBtn = document.getElementById('type-quote');
+  const iBtn = document.getElementById('type-invoice');
+  if (type === 'quote') {
+    qBtn.classList.add('active'); iBtn.classList.remove('active');
+  } else {
+    iBtn.classList.add('active'); qBtn.classList.remove('active');
+  }
+}
+
+function saveQuote() {
+  // Gather customer info
+  const formInputs = document.querySelectorAll('#page-new-quote .form-control');
+  const name = formInputs[0] ? formInputs[0].value.trim() || 'Customer' : 'Customer';
+  const email = formInputs[1] ? formInputs[1].value.trim() || '' : '';
+  const phone = formInputs[2] ? formInputs[2].value.trim() || '' : '';
+  const address = formInputs[3] ? formInputs[3].value.trim() || '' : '';
+  const notes = formInputs[4] ? formInputs[4].value.trim() || '' : '';
+  // Gather line items — auto-elaborate any that are still short
+  const rows = document.querySelectorAll('#new-quote-lines tr');
+  const lineItems = [];
+  let subtotal = 0;
+  const fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  rows.forEach(function(row) {
+    const cols = row.querySelectorAll('input');
+    if (cols.length >= 3) {
+      const qty = parseFloat(cols[1].value) || 1;
+      const price = parseFloat((cols[2].value || '0').replace(/[^0-9.]/g, '')) || 0;
+      const total = qty * price;
+      subtotal += total;
+      // origDesc = the original short text the user typed, regardless of whether autoElaborate already ran
+      let origDesc = cols[0].getAttribute('data-orig-desc') || '';
+      let desc = cols[0].value.trim() || '';
+      if (!origDesc) origDesc = desc; // not yet elaborated — current value IS the original
+      // Always (re-)elaborate using origDesc as the match key so price is always up-to-date
+      if (origDesc && origDesc.length < 80) {
+        var best = findElaboration(origDesc);
+        if (best) {
+          cols[0].setAttribute('data-orig-desc', origDesc);
+          desc = buildElaboratedText(best, total);
+          cols[0].value = desc;
+        } else if (total > 0) {
+          // No library match — append a standard price-coverage note so every item gets a body
+          desc = 'Quoted price of ' + fmt(total) + ' covers all labour, materials, specialist subcontractors, plant hire and waste disposal, inclusive of VAT at 20%.';
+        }
+      }
+      if (desc || price) lineItems.push({ origDesc: origDesc, desc: desc, qty: qty, price: price, total: total });
+    }
+  });
+  const vat = subtotal * 0.2;
+  const total = subtotal + vat;
+  const ref = 'Q-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+  // Store full data for rendered view
+  state.savedQuote = { ref: ref, name: name, email: email, phone: phone, address: address, notes: notes, lineItems: lineItems, subtotal: subtotal, vat: vat, total: total, date: dateStr };
+  // Brief summary — use original short description for table rows
+  const summary = lineItems.length > 0 ? (lineItems[0].origDesc || lineItems[0].desc).substring(0, 60) : 'New quote';
+  // Update quotes list table
+  const qTbody = document.getElementById('quotes-tbody');
+  if (qTbody) {
+    const tr = document.createElement('tr');
+    tr.className = 'clickable';
+    tr.setAttribute('data-status', 'draft');
+    tr.setAttribute('onclick', "navigate('saved-quote')");
+    tr.innerHTML = '<td class="td-ref">' + ref + '</td><td>' + name + '</td><td>' + summary + '</td><td><span class="badge badge-blue">Quote</span></td><td><span class="badge badge-draft">Draft</span></td><td>' + dateStr + '</td><td class="text-right td-amount">' + fmt(total) + '</td>';
+    qTbody.insertBefore(tr, qTbody.firstChild);
+  }
+  // Update dashboard recent table
+  const dTbody = document.getElementById('dashboard-recent-tbody');
+  if (dTbody) {
+    const tr = document.createElement('tr');
+    tr.className = 'clickable';
+    tr.setAttribute('onclick', "navigate('saved-quote')");
+    tr.innerHTML = '<td class="td-ref">' + ref + '</td><td>' + name + '</td><td>' + summary + '</td><td><span class="badge badge-draft">Draft</span></td><td>' + dateStr + '</td><td class="text-right td-amount">' + fmt(total) + '</td>';
+    dTbody.insertBefore(tr, dTbody.firstChild);
+  }
+  toast('Quote saved \u2713');
+  setTimeout(function() { navigate('saved-quote'); }, 400);
+}
+
+function renderSavedQuote() {
+  var q = state.savedQuote;
+  if (!q) { navigate('quotes-list'); return; }
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  // Build scope-of-works rows — each item gets its own shaded description block
+  var itemRows = '';
+  (q.lineItems || []).forEach(function(item, i) {
+    // heading = original short description entered by user; body = elaborated scope (≤30 words)
+    var heading = item.origDesc || item.desc;
+    var body = (item.desc && item.desc !== item.origDesc) ? item.desc : '';
+    itemRows +=
+      '<tr style="border-bottom:1px solid #e2e8f0;">' +
+        '<td style="vertical-align:top;padding:14px 12px;">' +
+          '<div style="font-weight:700;color:#0f172a;margin-bottom:' + (body ? '7px' : '0') + ';">' + heading + '</div>' +
+          (body ? '<div style="font-size:13px;color:#475569;line-height:1.6;padding:10px 12px;background:#f8fafc;border-left:3px solid #2563eb;border-radius:0 6px 6px 0;">' + body + '</div>' : '') +
+        '</td>' +
+        '<td style="vertical-align:top;text-align:right;padding:14px 12px;white-space:nowrap;">' + item.qty + '</td>' +
+        '<td style="vertical-align:top;text-align:right;padding:14px 12px;white-space:nowrap;">' + fmt(item.price) + '</td>' +
+        '<td style="vertical-align:top;text-align:right;padding:14px 12px;white-space:nowrap;font-weight:600;">' + fmt(item.total) + '</td>' +
+      '</tr>';
+  });
+  var notesHtml = q.notes ? '<div style="margin-top:20px;padding:14px 16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;font-size:13px;color:#64748b;"><strong>Notes:</strong> ' + q.notes + '</div>' : '';
+  var contactBlock = [q.email, q.phone, q.address].filter(Boolean).join('<br>');
+  document.getElementById('saved-quote-body').innerHTML =
+    // Letterhead
+    '<div style="border-bottom:3px solid #0f172a;padding-bottom:16px;margin-bottom:24px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+        '<div>' +
+          '<div style="font-size:26px;font-weight:900;color:#0f172a;letter-spacing:-0.5px;text-transform:uppercase;">W.V. Construction</div>' +
+          '<div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;">Renovation / Conversion / Refurbishment</div>' +
+        '</div>' +
+        '<div style="text-align:right;font-size:12px;color:#64748b;line-height:1.7;">' +
+          '<div>20 Ripon Road, Wallasey, Merseyside, CH45 6TR</div>' +
+          '<div>Mob: 07966 978824 | Tel: 0151 200 1341</div>' +
+          '<div>Email: antonycor@hotmail.co.uk</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    // Quote header
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">' +
+      '<div>' +
+        '<div style="font-family:monospace;font-size:13px;color:#64748b;margin-bottom:4px;">' + q.ref + '</div>' +
+        '<h2 style="font-size:22px;font-weight:700;color:#0f172a;margin:0 0 8px;">Quotation</h2>' +
+        '<span class="badge badge-blue" style="margin-right:4px;">Quote</span><span class="badge badge-draft">Draft</span>' +
+      '</div>' +
+      '<div style="text-align:right;font-size:13px;color:#374151;line-height:1.8;">' +
+        '<div><strong style="font-size:15px;">' + q.name + '</strong></div>' +
+        (contactBlock ? '<div style="color:#64748b;">' + contactBlock + '</div>' : '') +
+        '<div style="margin-top:6px;color:#64748b;font-size:12px;">Date issued: ' + q.date + '</div>' +
+        '<div style="color:#64748b;font-size:12px;">Valid for 30 days from issue date</div>' +
+      '</div>' +
+    '</div>' +
+    // Scope of works table
+    '<table style="width:100%;border-collapse:collapse;margin-bottom:4px;">' +
+      '<thead><tr style="background:#f8fafc;border-bottom:2px solid #e2e8f0;">' +
+        '<th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;">Scope of Works</th>' +
+        '<th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;white-space:nowrap;">Qty</th>' +
+        '<th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;white-space:nowrap;">Unit Price</th>' +
+        '<th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;white-space:nowrap;">Total</th>' +
+      '</tr></thead>' +
+      '<tbody>' + itemRows + '</tbody>' +
+    '</table>' +
+    // Totals
+    '<div style="max-width:320px;margin-left:auto;margin-top:12px;padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">' +
+      '<div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:4px;"><span>Subtotal (ex. VAT)</span><span>' + fmt(q.subtotal) + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin-bottom:10px;"><span>VAT (20%)</span><span>' + fmt(q.vat) + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:17px;font-weight:800;color:#0f172a;border-top:2px solid #0f172a;padding-top:10px;"><span>Total (inc. VAT)</span><span>' + fmt(q.total) + '</span></div>' +
+    '</div>' +
+    notesHtml +
+    // Footer
+    '<div style="margin-top:28px;padding-top:12px;border-top:1px solid #e2e8f0;font-size:11px;color:#94a3b8;text-align:center;">' +
+      'W.V. Construction is the trading name of ACOR Building and Property Solutions Ltd | Company Registration Number: 9287377' +
+    '</div>';
+}
+
+// ===== SIGNING =====
+function toggleApproveBtn() {
+  const cb = document.getElementById('consent-check');
+  const btn = document.getElementById('approve-btn');
+  if (!cb || !btn) return;
+  if (cb.checked) {
+    btn.disabled = false;
+    btn.classList.remove('btn-disabled');
+    btn.classList.add('btn-success');
+  } else {
+    btn.disabled = true;
+    btn.classList.add('btn-disabled');
+    btn.classList.remove('btn-success');
+  }
+}
+
+// ===== MODAL =====
+function openModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.classList.add('open');
+}
+
+function closeModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.classList.remove('open');
+}
+
+function copyStripeLink() {
+  navigator.clipboard && navigator.clipboard.writeText('https://buy.stripe.com/demo_abc123xYz456').catch(() => {});
+  toast('Payment link copied to clipboard 📋');
+  closeModal('stripe-modal');
+}
+
+// Close modal on overlay click
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('open');
+  }
+});
+
+// ===== TOAST =====
+function toast(message, isError) {
+  const container = document.getElementById('toast-container');
+  const div = document.createElement('div');
+  div.className = 'toast' + (isError ? ' toast-error' : '');
+  div.innerHTML = (isError ? '✕ ' : '✓ ') + message;
+  container.appendChild(div);
+  setTimeout(() => {
+    div.classList.add('hiding');
+    setTimeout(() => div.remove(), 300);
+  }, 3000);
+}
+
+// ===== PDF DOWNLOAD =====
+function downloadPDF() {
+  // Find the printable card body on whichever page is active
+  var activePage = document.querySelector('.page.active');
+  var bodyEl = activePage
+    ? (activePage.querySelector('#saved-quote-body') ||
+       activePage.querySelector('.invoice-main .card-body') ||
+       activePage.querySelector('.card-body'))
+    : null;
+  if (!bodyEl) { window.print(); return; }
+
+  var css = '<style>' +
+    '*{box-sizing:border-box;margin:0;padding:0;}' +
+    'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:36px;max-width:820px;margin:0 auto;color:#1e293b;font-size:14px;line-height:1.5;}' +
+    'table{width:100%;border-collapse:collapse;}' +
+    'th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;padding:9px 12px;text-align:left;border-bottom:2px solid #e2e8f0;background:#f8fafc;}' +
+    'td{padding:11px 12px;border-bottom:1px solid #f1f5f9;color:#374151;vertical-align:top;}' +
+    '.text-right{text-align:right!important;}' +
+    '.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;}' +
+    '.badge-blue{background:#dbeafe;color:#1d4ed8;}' +
+    '.badge-draft{background:#f1f5f9;color:#475569;}' +
+    '.badge-paid{background:#dcfce7;color:#16a34a;}' +
+    '.badge-grey{background:#f1f5f9;color:#475569;}' +
+    '.badge-invoiced{background:#fef3c7;color:#b45309;}' +
+    '.badge-overdue{background:#fee2e2;color:#dc2626;}' +
+    '.badge-sent{background:#dbeafe;color:#1d4ed8;}' +
+    '.invoice-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}' +
+    '.invoice-meta-block label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;display:block;margin-bottom:4px;}' +
+    '.invoice-meta-block .value{font-size:14px;color:#0f172a;font-weight:600;}' +
+    '.invoice-meta-block .value-sub{font-size:13px;color:#64748b;margin-top:2px;}' +
+    '.invoice-notes{margin-top:20px;padding:14px 16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;font-size:13px;color:#64748b;}' +
+    '.alert-green{background:#dcfce7;border:1px solid #bbf7d0;color:#14532d;border-radius:8px;padding:12px 16px;margin-top:16px;}' +
+    '.invoice-header-row{margin-bottom:20px;}' +
+    '.invoice-title-block .ref{font-family:monospace;font-size:13px;color:#64748b;margin-bottom:4px;}' +
+    '.invoice-title-block h2{font-size:20px;font-weight:700;color:#0f172a;margin-bottom:8px;}' +
+    '.invoice-badges{display:flex;gap:8px;}' +
+    '.totals-block{border-top:2px solid #e2e8f0;padding-top:12px;margin-top:4px;}' +
+    '.totals-row{display:flex;justify-content:space-between;padding:5px 12px;font-size:14px;}' +
+    '.totals-row.total{font-size:16px;font-weight:700;color:#0f172a;border-top:1px solid #e2e8f0;margin-top:6px;padding-top:10px;}' +
+    '@page{margin:14mm;}' +
+    '</style>';
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>W.V. Construction</title>' +
+    css + '</head><body>' +
+    bodyEl.innerHTML +
+    '<scr' + 'ipt>window.addEventListener("load",function(){setTimeout(function(){window.print();},300);});</scr' + 'ipt>' +
+    '</body></html>';
+
+  var blob = new Blob([html], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var w = window.open(url, '_blank');
+  // Revoke the blob URL after a delay to free memory
+  setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
+}
+
+// ===== DESCRIPTION ELABORATION =====
+var ELABORATIONS = {
+  'loft conversion': 'Full loft conversion including structural alterations, new floor joists, stud-wall partition, Velux or dormer window installation, loft hatch with retractable ladder, 200mm insulation between joists plus 100mm crossways to Building Regulations standard, boarding throughout and full plasterboard, skim and set to walls and ceiling.',
+  'dormer': 'Dormer window construction including forming structural opening in roof, steel lintel, new rafters and trimming, external tile/slate finish to match existing, UPVC or timber-framed dormer cheeks, double-glazed casement window, internal plasterboard, skim and redecoration.',
+  'bathroom': 'Full bathroom strip-out and refurbishment. Supply and fix new bath, close-coupled WC, pedestal wash hand basin and thermostatic shower enclosure with tray. Full ceramic wall tiling to 1,200mm above bath and full height in shower zone. New vinyl or tile flooring. Replumb all waste and supply pipework to current standards. Chrome towel rail, mirror and accessories.',
+  'kitchen': 'Full kitchen strip-out and installation including removal of existing units and appliances, making good walls and floor, fitting of new base and wall units to manufacturer specification, worktop cutting and fitting, sink and tap installation, appliance connection (oven, hob, extractor), tiling to splashback area, and decoration throughout.',
+  'extension': 'Single-storey rear extension including strip foundations, blockwork cavity walls, insulated flat or pitched roof structure to Building Regulations standard, new external door and windows, internal stud partition if required, first and second fix electrics, plasterboard and skim throughout, floor screed or timber decking, and full decoration.',
+  'garage conversion': 'Full garage-to-habitable-room conversion including forming new insulated floor (50mm insulation plus screed), insulating and dry-lining all walls (75mm PIR board), insulated ceiling, new UPVC or timber window and door, first and second fix electrical work including consumer unit amendment, plastering and skimming, and decoration throughout.',
+  'driveway': 'Full driveway construction or resurfacing including breaking out and removing existing surface, re-grading and compacting sub-base (MOT Type 1 to 150mm), edge restraints, laying of block paving, tarmac, or resin-bound surface to specification, reinstatement of drainage channel and connection to soakaway or highway drain.',
+  'gate': 'Supply and installation of new gate including concrete post bases, galvanised steel or hardwood timber posts set in concrete, gate leaf hung to posts on heavy-duty hinges, latch and lock mechanism, and painting or staining to agreed colour.',
+  'fencing': 'Supply and erection of new fence including excavation and concrete setting of new posts at 1.8m centres, featheredge or panel infill, gravel boards, capping rail, and all fixings. Removal and disposal of existing fencing included.',
+  'roofing': 'Full roof strip and re-cover including removing existing tiles/slates, inspecting and replacing any defective rafters, battens and felt, fitting breathable roofing membrane, new battens at correct gauge, re-laying tiles/slates to match or new material as agreed, ridge and hip pointing, and all lead flashings to abutments and valleys.',
+  'plastering': 'Hack off existing plaster where hollow, PVA prime all surfaces, apply scratch coat of bonding plaster and finish coat of multi-finish skim to achieve a flat, smooth surface ready for decoration. Includes beading to all external corners and reveals.',
+  'painting': 'Full interior decoration including preparation (filling, sanding, sugar-soap wash), one mist coat and two finishing coats of emulsion to all walls and ceilings, one undercoat and two gloss/satin coats to all woodwork including architraves, skirtings, doors and frames, and window boards.',
+  'plumbing': 'Supply and installation of plumbing works including all pipework in copper or plastic push-fit, isolation valves, compression or push-fit fittings, pressure testing on completion, and making good any disturbed surfaces. All works to comply with Part G of the Building Regulations and Water Regulations.',
+  'electrical': 'First and second fix electrical installation including consumer unit, ring main circuits for sockets, radial lighting circuits, RCD protection throughout, earthing and bonding to current Part P Building Regulations standard, testing and commissioning, and issue of Electrical Installation Certificate.',
+  'rewire': 'Full house rewire including removal of all existing wiring, new consumer unit with RCBO protection on all circuits, ring main and radial socket circuits to all rooms, lighting circuits, outdoor socket and lighting provision, smoke detector provision to BS 5839, testing and commissioning, and Electrical Installation Certificate.',
+  'insulation': 'Installation of thermal insulation to current Building Regulations standards including full-fill or partial-fill cavity wall insulation, 200mm mineral wool between joists plus 100mm crossways at ceiling level, and/or rigid PIR board to walls and floors, vapour barrier where required, and making good all disturbed finishes.',
+  'decking': 'Construction of external timber decking including treated softwood or hardwood frame on concrete pad footings, decking boards at 5mm spacing, fascia boards, balustrade with handrail and vertical infill balusters to current safety regulations, and staining or preservative treatment to all timber.',
+  'flooring': 'Supply and installation of new flooring including removal of existing, preparation of sub-floor (levelling compound where required), fitting of new engineered timber, laminate, or vinyl flooring with all trims, thresholds and beading, and refitting of skirting boards.',
+  'structural': 'Structural alteration works including engaging a structural engineer for calculations (if required), forming new structural opening, installation of steel or timber beam to engineer\'s specification, temporary propping, making good brickwork or blockwork to reveal, and replastering and redecoration of affected areas.',
+  'pointing': 'Raking out and repointing defective mortar joints to external brickwork or stonework using a matching mortar mix to current standards, including preparation, removing debris and washing down on completion.',
+  'window': 'Supply and installation of new UPVC or timber double-glazed window(s) including removing existing frame, making good reveals and internal plaster, fitting new frame, glazed sash and board, external mastic sealing all round, and internal making good and decoration.',
+  'door': 'Supply and installation of new door including removing existing, making good frame or supplying new frame if required, hanging new solid-core or glazed door leaf, fitting hinges, lock or latch, letter box and threshold bar, and finishing both faces to decoration standard.',
+  'guttering': 'Remove and dispose of existing gutters and downpipes, supply and fix new UPVC guttering system including all brackets, unions, angles and stop ends, new downpipes and shoe to discharge into existing gully or soakaway, and seal all joints on completion.',
+  'patio': 'Construction of new patio area including excavation to formation level, compacted MOT Type 1 sub-base, sharp-sand bed, laying of porcelain, natural stone or concrete paving slabs to falls for drainage, pointing all joints with appropriate mortar or polymeric sand, and making good all edges.',
+};
+
+// Find best elaboration match for a description string
+function findElaboration(raw) {
+  var rawLower = raw.toLowerCase();
+  var best = null, bestScore = 0;
+  Object.keys(ELABORATIONS).forEach(function(key) {
+    var words = key.split(' '), score = 0;
+    words.forEach(function(w) { if (rawLower.indexOf(w) !== -1) score++; });
+    if (rawLower.indexOf(key) !== -1) score += 2;
+    if (score > bestScore) { bestScore = score; best = key; }
+  });
+  return bestScore > 0 ? best : null;
+}
+
+// Truncate text to at most n words, appending ellipsis if trimmed
+function truncateWords(text, n) {
+  var words = text.trim().split(/\s+/);
+  if (words.length <= n) return text.trim();
+  return words.slice(0, n).join(' ') + '\u2026';
+}
+
+// Build price-justified elaboration text — scope limited to 30 words
+function buildElaboratedText(key, totalPrice) {
+  var text = truncateWords(ELABORATIONS[key], 30);
+  if (totalPrice > 0) {
+    var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+    text += ' Quoted price of ' + fmt(totalPrice) + ' covers all labour, materials, specialist subcontractors, plant hire and waste disposal, inclusive of VAT at 20%.';
+  }
+  return text;
+}
+
+// Live recalculation of totals in the new-quote form
+function recalcNewQuoteTotals() {
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var rows = document.querySelectorAll('#new-quote-lines tr');
+  var subtotal = 0;
+  rows.forEach(function(row) {
+    var inputs = row.querySelectorAll('input');
+    if (inputs.length < 3) return;
+    var qty = parseFloat(inputs[1].value) || 0;
+    var price = parseFloat((inputs[2].value || '0').replace(/[^0-9.]/g, '')) || 0;
+    var lineTotal = qty * price;
+    subtotal += lineTotal;
+    var totalCell = row.querySelector('.line-total');
+    if (totalCell) totalCell.textContent = lineTotal > 0 ? fmt(lineTotal) : '\u2014';
+  });
+  var vat = subtotal * 0.2;
+  var elSub = document.getElementById('nq-subtotal');
+  var elVat = document.getElementById('nq-vat');
+  var elTotal = document.getElementById('nq-total');
+  if (elSub) elSub.textContent = fmt(subtotal);
+  if (elVat) elVat.textContent = fmt(vat);
+  if (elTotal) elTotal.textContent = fmt(subtotal + vat);
+}
+
+// ✨ button handler — elaborate a single description input
+function expandDescription(inputEl) {
+  var raw = inputEl.value.trim();
+  if (!raw) { toast('Enter a description first', true); return; }
+  var key = findElaboration(raw);
+  if (key) {
+    var row = inputEl.closest('tr');
+    var priceInput = row ? row.querySelectorAll('input')[2] : null;
+    var qty = row ? parseFloat(row.querySelectorAll('input')[1].value) || 1 : 1;
+    var price = priceInput ? parseFloat((priceInput.value || '0').replace(/[^0-9.]/g, '')) || 0 : 0;
+    if (!inputEl.getAttribute('data-orig-desc')) inputEl.setAttribute('data-orig-desc', raw);
+    inputEl.value = buildElaboratedText(key, price * qty);
+    inputEl.style.borderColor = '#16a34a';
+    setTimeout(function() { inputEl.style.borderColor = ''; }, 1500);
+    toast('Description elaborated \u2713');
+  } else {
+    toast('No elaboration found \u2014 try "bathroom", "loft", "extension", "driveway"\u2026', true);
+  }
+}
+
+// Auto-elaborate when user leaves a short description field
+function autoElaborate(inputEl) {
+  var raw = inputEl.value.trim();
+  if (!raw || raw.length > 80) return; // skip if already detailed
+  var key = findElaboration(raw);
+  if (!key) return;
+  var row = inputEl.closest('tr');
+  var priceInput = row ? row.querySelectorAll('input')[2] : null;
+  var qty = row ? parseFloat(row.querySelectorAll('input')[1].value) || 1 : 1;
+  var price = priceInput ? parseFloat((priceInput.value || '0').replace(/[^0-9.]/g, '')) || 0 : 0;
+  if (!inputEl.getAttribute('data-orig-desc')) inputEl.setAttribute('data-orig-desc', raw);
+  inputEl.value = buildElaboratedText(key, price * qty);
+  inputEl.style.borderColor = '#16a34a';
+  setTimeout(function() { inputEl.style.borderColor = ''; }, 1500);
+  toast('Description auto-elaborated \u2713');
+}
+
+// "Elaborate All Items" button — process every line at once
+function elaborateAll() {
+  var rows = document.querySelectorAll('#new-quote-lines tr');
+  var count = 0;
+  rows.forEach(function(row) {
+    var inputs = row.querySelectorAll('input');
+    if (inputs.length < 3) return;
+    var raw = inputs[0].value.trim();
+    if (!raw || raw.length > 80) return;
+    var key = findElaboration(raw);
+    if (!key) return;
+    var qty = parseFloat(inputs[1].value) || 1;
+    var price = parseFloat((inputs[2].value || '0').replace(/[^0-9.]/g, '')) || 0;
+    if (!inputs[0].getAttribute('data-orig-desc')) inputs[0].setAttribute('data-orig-desc', raw);
+    inputs[0].value = buildElaboratedText(key, price * qty);
+    inputs[0].style.borderColor = '#16a34a';
+    setTimeout(function() { inputs[0].style.borderColor = ''; }, 2000);
+    count++;
+  });
+  if (count > 0) {
+    toast(count + ' item' + (count > 1 ? 's' : '') + ' elaborated \u2713');
+  } else {
+    toast('All items already elaborated, or no matching descriptions found', true);
+  }
+}
+
+// ===== OUTSTANDING INVOICES DATA =====
+var outstandingInvoices = [
+  { id: 'steve', ref: 'INV-08A96C3B', customer: 'Steve Harrison', email: 's.harrison@email.com', phone: '07700112233', total: 3600, status: 'overdue', due: '1 Feb 2025', desc: 'Full bathroom renovation — 12 Oak Avenue', page: 'invoice-steve' },
+  { id: 'linda', ref: 'INV-3D7F2A1E', customer: 'Linda Park', email: 'linda.park@email.com', phone: '07700900123', total: 11340, status: 'invoiced', due: '17 Mar 2025', desc: 'Kitchen extension — rear of property', page: 'invoice-linda' },
+  { id: 'marcus', ref: 'Q-7C4A9E12', customer: 'Marcus Webb', email: 'm.webb@email.com', phone: '07700556677', total: 18000, status: 'accepted', due: '—', desc: 'Full loft conversion — 9 Birch Lane', page: 'quote-marcus' }
+];
+
+// ===== OUTSTANDING PAGE =====
+function renderOutstandingPage() {
+  var container = document.getElementById('outstanding-list');
+  if (!container) return;
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+
+  var active = outstandingInvoices.filter(function(inv) {
+    if (inv.id === 'steve' && state.stevePaid) return false;
+    if (inv.id === 'linda' && state.lindaPaid) return false;
+    // Marcus only appears once the quote has been accepted
+    if (inv.id === 'marcus' && !state.marcusAccepted) return false;
+    return true;
+  });
+
+  if (active.length === 0) {
+    container.innerHTML = '<div class="alert alert-green" style="margin-top:8px;">\u2713 All invoices are settled. No outstanding balances.</div>';
+    return;
+  }
+
+  var html = '';
+  active.forEach(function(inv) {
+    var cashPaid = state.cashPaid ? (state.cashPaid[inv.id] || 0) : 0;
+    var savedCash = state.savedCash ? (state.savedCash[inv.id] || 0) : 0;
+    var remaining = Math.max(0, inv.total - cashPaid);
+    var savedRemaining = Math.max(0, inv.total - savedCash);
+    var statusClass = inv.status === 'overdue' ? 'badge-overdue' : inv.status === 'accepted' ? 'badge-accepted' : 'badge-invoiced';
+    var statusLabel = inv.status === 'overdue' ? 'Overdue' : inv.status === 'accepted' ? 'Accepted' : 'Invoiced';
+
+    var savedBreakdown = savedCash > 0
+      ? '<div style="padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;margin:10px 0;">' +
+          '<div style="display:flex;justify-content:space-between;font-size:14px;color:#166534;margin-bottom:6px;">' +
+            '<span>Invoice total:</span><span style="font-weight:600;">' + fmt(inv.total) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;font-size:14px;color:#15803d;margin-bottom:8px;">' +
+            '<span>Cash received:</span><span style="font-weight:700;">&minus; ' + fmt(savedCash) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;font-size:16px;font-weight:800;color:#dc2626;border-top:1px solid #bbf7d0;padding-top:8px;">' +
+            '<span>Balance remaining:</span><span>' + fmt(savedRemaining) + '</span>' +
+          '</div>' +
+        '</div>'
+      : '';
+
+    html +=
+      '<div class="outstanding-card">' +
+        '<div class="outstanding-card-header">' +
+          '<div>' +
+            '<div style="font-family:monospace;font-size:12px;color:#64748b;margin-bottom:3px;">' + inv.ref + '</div>' +
+            '<div style="font-size:16px;font-weight:700;color:#0f172a;">' + inv.customer + '</div>' +
+            '<div style="font-size:13px;color:#64748b;margin-top:2px;">' + inv.desc + '</div>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">' +
+            '<span class="badge ' + statusClass + '">' + statusLabel + '</span>' +
+            '<span style="font-size:12px;color:#64748b;">Due: ' + inv.due + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="outstanding-card-body">' +
+          '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">' +
+            '<span style="font-size:13px;color:#64748b;">Total invoiced:</span>' +
+            '<span class="outstanding-total">' + fmt(inv.total) + '</span>' +
+          '</div>' +
+          savedBreakdown +
+          '<div class="cash-row">' +
+            '<label>&#128181; Cash received:</label>' +
+            '<input type="number" min="0" max="' + inv.total + '" step="0.01" placeholder="0.00"' +
+            ' value="' + (cashPaid > 0 ? cashPaid.toFixed(2) : '') + '"' +
+            ' id="cash-' + inv.id + '" oninput="updateRemaining(\'' + inv.id + '\',' + inv.total + ')">' +
+            '<button class="btn btn-sm" style="background:#15803d;color:#fff;border-color:#15803d;white-space:nowrap;" onclick="saveCashPayment(\'' + inv.id + '\')">&#10003; Save Payment</button>' +
+            '<div class="remaining-label">Remaining<br><span class="remaining-amount" id="remaining-' + inv.id + '">' + fmt(remaining) + '</span></div>' +
+          '</div>' +
+          '<div class="outstanding-actions">' +
+            '<button class="btn btn-primary btn-sm" onclick="sendPaymentRequestEmail(\'' + inv.id + '\')">&#10003; Send Email Request</button>' +
+            '<button class="btn btn-success btn-sm" onclick="sendPaymentRequestText(\'' + inv.id + '\')">&#128172; Send Text Request</button>' +
+            '<button class="btn btn-outline btn-sm" onclick="navigate(\'' + inv.page + '\')">' + (inv.status === 'accepted' ? 'View Quote' : 'View Invoice') + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function updateRemaining(id, total) {
+  var cashInput = document.getElementById('cash-' + id);
+  if (!cashInput) return;
+  var cashPaid = parseFloat(cashInput.value) || 0;
+  cashPaid = Math.min(Math.max(cashPaid, 0), total);
+  if (!state.cashPaid) state.cashPaid = {};
+  state.cashPaid[id] = cashPaid;
+  var remaining = Math.max(0, total - cashPaid);
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var el = document.getElementById('remaining-' + id);
+  if (el) el.textContent = fmt(remaining);
+}
+
+function saveCashPayment(id) {
+  var inv = getOutstandingInvoice(id);
+  if (!inv) return;
+  var cashInput = document.getElementById('cash-' + id);
+  if (!cashInput) return;
+  var cashVal = parseFloat(cashInput.value) || 0;
+  cashVal = Math.min(Math.max(cashVal, 0), inv.total);
+  if (!state.savedCash) state.savedCash = {};
+  if (!state.cashPaid) state.cashPaid = {};
+  state.savedCash[id] = cashVal;
+  state.cashPaid[id] = cashVal;
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  renderOutstandingPage();
+  toast('Cash payment of ' + fmt(cashVal) + ' saved \u2713');
+}
+
+function getOutstandingInvoice(id) {
+  return outstandingInvoices.filter(function(inv) { return inv.id === id; })[0] || null;
+}
+
+function sendPaymentRequestEmail(id) {
+  var inv = getOutstandingInvoice(id);
+  if (!inv) return;
+  var cashPaid = (state.cashPaid && state.cashPaid[id]) || 0;
+  var remaining = Math.max(0, inv.total - cashPaid);
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var subject = encodeURIComponent('Payment Request \u2014 ' + inv.ref + ' \u2014 W.V. Construction');
+  var bodyLines = [
+    'Dear ' + inv.customer + ',',
+    '',
+    'This is a payment reminder for the following invoice:',
+    '',
+    'Invoice ref: ' + inv.ref,
+    'Work: ' + inv.desc,
+    'Total invoiced: ' + fmt(inv.total),
+    cashPaid > 0 ? 'Cash received: ' + fmt(cashPaid) : null,
+    'Amount now due: ' + fmt(remaining),
+    '',
+    'Please arrange payment at your earliest convenience.',
+    '',
+    'Bank transfer:',
+    'W.V. Construction | Sort code: 20-00-00 | Account: 12345678',
+    'Please quote ' + inv.ref + ' as your payment reference.',
+    '',
+    'Kind regards,',
+    'W.V. Construction',
+    'Tel: 0151 200 1341 | Mob: 07966 978824'
+  ].filter(function(l) { return l !== null; }).join('\n');
+  window.location.href = 'mailto:' + inv.email + '?subject=' + subject + '&body=' + encodeURIComponent(bodyLines);
+  toast('Opening email client \u2709');
+}
+
+function sendPaymentRequestText(id) {
+  var inv = getOutstandingInvoice(id);
+  if (!inv) return;
+  var cashPaid = (state.cashPaid && state.cashPaid[id]) || 0;
+  var remaining = Math.max(0, inv.total - cashPaid);
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var firstName = inv.customer.split(' ')[0];
+  var msg = 'Hi ' + firstName + ', a payment reminder from W.V. Construction. ' +
+    'Invoice ' + inv.ref + '. Amount due: ' + fmt(remaining) + '. ' +
+    (cashPaid > 0 ? 'Cash already credited: ' + fmt(cashPaid) + '. ' : '') +
+    'Please call 0151 200 1341 or pay by bank transfer: Sort 20-00-00 Acc 12345678 Ref ' + inv.ref + '. Thank you.';
+  window.location.href = 'sms:' + inv.phone + '?body=' + encodeURIComponent(msg);
+  toast('Opening SMS app \ud83d\udcac');
+}
+
+// ===== SEND BY EMAIL (native mail client) =====
+function sendByEmail(email, name, ref, amount) {
+  var fmt = function(n) { return '\u00a3' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var isInvoice = ref.indexOf('INV') !== -1;
+  var docType = isInvoice ? 'Invoice' : 'Quotation';
+  var subject = encodeURIComponent(docType + ' from W.V. Construction \u2014 ' + ref);
+  var bodyLines = [
+    'Dear ' + name + ',',
+    '',
+    'Please find attached your ' + docType.toLowerCase() + ' ' + ref + ' from W.V. Construction.',
+    '',
+    'Total: ' + fmt(amount),
+    '',
+    isInvoice
+      ? 'Payment is due within 30 days. Bank transfer preferred:\nW.V. Construction | Sort: 20-00-00 | Acc: 12345678\nPlease quote ' + ref + ' as your payment reference.'
+      : 'This quotation is valid for 30 days from the date of issue.\nPlease contact us to discuss or accept this quote.',
+    '',
+    'Please do not hesitate to contact us if you have any questions.',
+    '',
+    'Kind regards,',
+    'W.V. Construction',
+    'Mob: 07966 978824 | Tel: 0151 200 1341',
+    'Email: antonycor@hotmail.co.uk'
+  ].join('\n');
+  window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + encodeURIComponent(bodyLines);
+  toast('Opening email client \u2709');
+}
+
+function sendSavedQuoteByEmail() {
+  var q = state.savedQuote;
+  if (!q) return;
+  downloadPDF(); // Open PDF save dialog first
+  setTimeout(function() {
+    sendByEmail(q.email, q.name, q.ref, q.total);
+  }, 700);
+  toast('Quote PDF prepared \u2014 save it, then attach to your email \u2709');
+}
+
+// ===== SELECT & DELETE =====
+function initTableCheckboxes(tbodyId, deleteBarId, cbAllId) {
+  var tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  var table = tbody.closest('table');
+  if (!table) return;
+
+  // Add header checkbox
+  var thead = table.querySelector('thead tr');
+  if (thead && !thead.querySelector('.cb-th')) {
+    var th = document.createElement('th');
+    th.className = 'cb-th';
+    var cbAll = document.createElement('input');
+    cbAll.type = 'checkbox';
+    cbAll.className = 'row-cb';
+    if (cbAllId) cbAll.id = cbAllId;
+    cbAll.addEventListener('click', function() { toggleAllCheckboxes(tbodyId, this, deleteBarId, cbAllId); });
+    th.appendChild(cbAll);
+    thead.insertBefore(th, thead.firstChild);
+  }
+
+  // Add checkbox to each existing row
+  tbody.querySelectorAll('tr').forEach(function(row) {
+    if (row.querySelector('.cb-td')) return;
+    addRowCheckbox(row, tbodyId, deleteBarId, cbAllId);
+  });
+}
+
+function addRowCheckbox(row, tbodyId, deleteBarId, cbAllId) {
+  var td = document.createElement('td');
+  td.className = 'cb-td';
+  td.addEventListener('click', function(e) { e.stopPropagation(); });
+  var cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'row-cb';
+  cb.addEventListener('change', function() { updateDeleteBar(tbodyId, deleteBarId, cbAllId); });
+  td.appendChild(cb);
+  row.insertBefore(td, row.firstChild);
+}
+
+function toggleAllCheckboxes(tbodyId, cbAll, deleteBarId, cbAllId) {
+  var tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  tbody.querySelectorAll('.row-cb').forEach(function(cb) { cb.checked = cbAll.checked; });
+  updateDeleteBar(tbodyId, deleteBarId, cbAllId);
+}
+
+function updateDeleteBar(tbodyId, deleteBarId, cbAllId) {
+  var tbody = document.getElementById(tbodyId);
+  var bar = document.getElementById(deleteBarId);
+  if (!tbody || !bar) return;
+  var checked = tbody.querySelectorAll('.row-cb:checked').length;
+  var countEl = bar.querySelector('.del-count');
+  if (countEl) countEl.textContent = checked + ' selected';
+  bar.classList.toggle('show', checked > 0);
+  if (cbAllId) {
+    var cbAll = document.getElementById(cbAllId);
+    if (cbAll) {
+      var total = tbody.querySelectorAll('.row-cb').length;
+      cbAll.indeterminate = checked > 0 && checked < total;
+      cbAll.checked = total > 0 && checked === total;
+    }
+  }
+}
+
+function deleteSelected(tbodyId, deleteBarId, cbAllId) {
+  var tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  var rows = Array.from(tbody.querySelectorAll('tr')).filter(function(row) {
+    var cb = row.querySelector('.row-cb');
+    return cb && cb.checked;
+  });
+  if (rows.length === 0) return;
+  if (!window.confirm('Delete ' + rows.length + ' selected item' + (rows.length > 1 ? 's' : '') + '?')) return;
+  rows.forEach(function(row) { row.remove(); });
+  updateDeleteBar(tbodyId, deleteBarId, cbAllId);
+  toast(rows.length + ' item' + (rows.length > 1 ? 's' : '') + ' deleted');
+}
+
+// ===== AI GENERATION =====
+var aiState = {
+  stream: null,
+  capturedDataUrl: null,
+  selectedVariation: null,
+  variations: []
+};
+
+var AI_VARIATION_TEMPLATES = [
+  // Slot 0 — scope-first, detailed
+  function(desc) {
+    var scope = desc.trim().replace(/\.$/, '');
+    return scope + '. ' +
+      'The scheme should prioritise natural light and an open, airy feel, with high-quality materials throughout. ' +
+      'All structural work, first-fix electrics and plumbing, plastering, and decorated finishes are to be included within the scope. ' +
+      'A detailed programme of works will be agreed with the client prior to commencement, and the site will be left clean and clear on completion.';
+  },
+  // Slot 1 — client-benefit-first
+  function(desc) {
+    var scope = desc.trim().replace(/\.$/, '');
+    return 'This project will deliver ' + scope.charAt(0).toLowerCase() + scope.slice(1) + ', ' +
+      'creating a transformed space that adds lasting value to the property. ' +
+      'Works will be carried out by fully qualified tradespeople to Building Regulations standard, with minimal disruption to the household. ' +
+      'Provisional sums are included for finishes and fixtures; the client retains final selection rights. ' +
+      'Full waste removal and site clearance are included at no additional cost.';
+  },
+  // Slot 2 — concise professional summary
+  function(desc) {
+    var scope = desc.trim().replace(/\.$/, '');
+    return 'Supply and install: ' + scope.charAt(0).toLowerCase() + scope.slice(1) + '. ' +
+      'Scope covers demolition of existing fabric where required, structural alterations (subject to SE sign-off), ' +
+      'all trades first and second fix, decorated finish, and final snagging inspection. ' +
+      'Works to comply with current Building Regulations and relevant British Standards. ' +
+      'All waste to be removed from site throughout the programme.';
+  }
+];
+
+function aiStartCamera() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    toast('Camera not supported in this browser');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
+    .then(function(stream) {
+      aiState.stream = stream;
+      var video = document.getElementById('ai-video');
+      var placeholder = document.getElementById('ai-camera-placeholder');
+      var startBtn = document.getElementById('ai-start-btn');
+      var captureBtn = document.getElementById('ai-capture-btn');
+      if (video) { video.srcObject = stream; video.style.display = 'block'; }
+      if (placeholder) placeholder.style.display = 'none';
+      if (startBtn) startBtn.style.display = 'none';
+      if (captureBtn) captureBtn.style.display = '';
+    })
+    .catch(function(err) {
+      toast('Camera access denied: ' + err.message);
+    });
+}
+
+function aiCapture() {
+  var video = document.getElementById('ai-video');
+  var canvas = document.getElementById('ai-canvas');
+  var retakeBtn = document.getElementById('ai-retake-btn');
+  var captureBtn = document.getElementById('ai-capture-btn');
+  if (!video || !canvas) return;
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 360;
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  aiState.capturedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+  // Stop stream, show still
+  if (aiState.stream) { aiState.stream.getTracks().forEach(function(t) { t.stop(); }); aiState.stream = null; }
+  video.style.display = 'none';
+  canvas.style.display = 'block';
+  if (captureBtn) captureBtn.style.display = 'none';
+  if (retakeBtn) retakeBtn.style.display = '';
+  toast('Photo captured ✓');
+}
+
+function aiRetake() {
+  var video = document.getElementById('ai-video');
+  var canvas = document.getElementById('ai-canvas');
+  var retakeBtn = document.getElementById('ai-retake-btn');
+  var startBtn = document.getElementById('ai-start-btn');
+  var placeholder = document.getElementById('ai-camera-placeholder');
+  aiState.capturedDataUrl = null;
+  if (canvas) canvas.style.display = 'none';
+  if (video) { video.style.display = 'none'; video.srcObject = null; }
+  if (retakeBtn) retakeBtn.style.display = 'none';
+  if (startBtn) startBtn.style.display = '';
+  if (placeholder) placeholder.style.display = '';
+}
+
+function aiGenerateVariations() {
+  var desc = (document.getElementById('ai-description') || {}).value || '';
+  if (!desc.trim()) { toast('Please enter a description first'); return; }
+
+  var btn = document.getElementById('ai-generate-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generating…'; }
+
+  // Simulate a brief generation delay for realism
+  setTimeout(function() {
+    aiState.selectedVariation = null;
+    aiState.variations = AI_VARIATION_TEMPLATES.map(function(fn) { return fn(desc); });
+
+    var labels = ['Option A — Detailed Scope', 'Option B — Client Benefits', 'Option C — Concise Professional'];
+    var list = document.getElementById('ai-variations-list');
+    if (!list) return;
+    list.innerHTML = '';
+    aiState.variations.forEach(function(text, i) {
+      var card = document.createElement('div');
+      card.style.cssText = 'border:2px solid #e2e8f0;border-radius:10px;padding:16px 18px;cursor:pointer;background:#fff;transition:border-color .15s,background .15s;';
+      card.id = 'ai-var-' + i;
+      card.innerHTML =
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
+          '<input type="radio" name="ai-variation" id="ai-radio-' + i + '" value="' + i + '" style="accent-color:#2563eb;width:16px;height:16px;" onchange="aiSelectVariation(' + i + ')">' +
+          '<label for="ai-radio-' + i + '" style="font-weight:700;font-size:14px;color:#0f172a;cursor:pointer;">' + labels[i] + '</label>' +
+        '</div>' +
+        '<div style="font-size:14px;color:#334155;line-height:1.65;">' + text + '</div>';
+      card.onclick = function() {
+        var radio = document.getElementById('ai-radio-' + i);
+        if (radio) { radio.checked = true; }
+        aiSelectVariation(i);
+      };
+      list.appendChild(card);
+    });
+
+    var wrap = document.getElementById('ai-variations-wrap');
+    if (wrap) wrap.style.display = '';
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 Regenerate'; }
+    toast('3 variations generated ✓');
+  }, 900);
+}
+
+function aiSelectVariation(index) {
+  aiState.selectedVariation = index;
+  [0, 1, 2].forEach(function(i) {
+    var card = document.getElementById('ai-var-' + i);
+    if (!card) return;
+    if (i === index) {
+      card.style.borderColor = '#2563eb';
+      card.style.background = '#eff6ff';
+    } else {
+      card.style.borderColor = '#e2e8f0';
+      card.style.background = '#fff';
+    }
+  });
+}
+
+function aiProceedToFinalise() {
+  if (aiState.selectedVariation === null) {
+    toast('Please select a variation first');
+    return;
+  }
+  // Populate finalise page
+  var selEl = document.getElementById('ai-final-selected');
+  if (selEl) selEl.textContent = aiState.variations[aiState.selectedVariation];
+
+  var photoWrap = document.getElementById('ai-final-photo-wrap');
+  var photoImg = document.getElementById('ai-final-photo');
+  if (aiState.capturedDataUrl && photoWrap && photoImg) {
+    photoImg.src = aiState.capturedDataUrl;
+    photoWrap.style.display = '';
+  } else if (photoWrap) {
+    photoWrap.style.display = 'none';
+  }
+
+  var comments = document.getElementById('ai-final-comments');
+  if (comments) comments.value = '';
+  var savedConf = document.getElementById('ai-saved-confirm');
+  if (savedConf) savedConf.style.display = 'none';
+
+  navigate('ai-finalise');
+}
+
+function aiSaveFinal() {
+  var savedConf = document.getElementById('ai-saved-confirm');
+  if (savedConf) savedConf.style.display = '';
+  toast('Brief saved ✓');
+}
+
+// Reset AI page state on navigate away
+var _origNavigate = navigate;
+navigate = function(page) {
+  if (state.page === 'ai-generation' && page !== 'ai-generation' && page !== 'ai-finalise') {
+    // Stop camera if navigating away
+    if (aiState.stream) { aiState.stream.getTracks().forEach(function(t) { t.stop(); }); aiState.stream = null; }
+  }
+  _origNavigate(page);
+};
+</script>
+
+<!-- ==================== QUOTE JULIE PAGE ==================== -->
+<div class="page" id="page-quote-julie">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">&#8592; Back to list</a>
+      <div class="invoice-layout">
+        <div class="invoice-main">
+          <div class="card">
+            <div class="card-body">
+              <div style="border-bottom:3px solid #0f172a;padding-bottom:16px;margin-bottom:24px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <div style="font-size:26px;font-weight:900;color:#0f172a;letter-spacing:-0.5px;text-transform:uppercase;">W.V. Construction</div>
+                  <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;">Renovation / Conversion / Refurbishment</div>
+                </div>
+                <div style="text-align:right;font-size:12px;color:#64748b;line-height:1.7;">
+                  <div>20 Ripon Road, Wallasey, Merseyside, CH45 6TR</div>
+                  <div>Mob: 07966 978824 | Tel: 0151 200 1341</div>
+                  <div>Email: antonycor@hotmail.co.uk</div>
+                </div>
+              </div>
+            </div>
+              <div class="invoice-header-row">
+                <div class="invoice-title-block">
+                  <div class="ref">Q-A1B2C3D4</div>
+                  <h2>Driveway resurfacing &amp; new gate install</h2>
+                  <div class="invoice-badges">
+                    <span class="badge badge-blue">Quote</span>
+                    <span class="badge badge-draft">Draft</span>
+                  </div>
+                </div>
+              </div>
+              <div class="invoice-meta-grid">
+                <div class="invoice-meta-block">
+                  <label>Customer</label>
+                  <div class="value">Julie Thornton</div>
+                  <div class="value-sub">julie.thornton@email.com</div>
+                  <div class="value-sub">07711 223344</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Address</label>
+                  <div class="value">14 Maple Drive, Chester CH2 4FG</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Issue Date</label>
+                  <div class="value">27 Feb 2025</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Valid Until</label>
+                  <div class="value">27 Mar 2025</div>
+                </div>
+              </div>
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Driveway resurfacing (block paving, 50m&#178;)</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">&#163;1,800.00</td>
+                    <td class="text-right">&#163;1,800.00</td>
+                  </tr>
+                  <tr>
+                    <td>New gate supply &amp; installation (timber, 3m)</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">&#163;575.00</td>
+                    <td class="text-right">&#163;575.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="totals-block">
+                <div class="totals-row"><span>Subtotal</span><span>&#163;2,375.00</span></div>
+                <div class="totals-row"><span>VAT (20%)</span><span>&#163;475.00</span></div>
+                <div class="totals-row total"><span>Total</span><span>&#163;2,850.00</span></div>
+              </div>
+              <div class="invoice-notes">&#128221; <strong>Notes:</strong> Quote valid for 30 days. Works include all labour and materials. Site to be cleared by customer prior to start.</div>
+              <div style="margin-top:24px;padding-top:12px;border-top:1px solid #e2e8f0;font-size:11px;color:#94a3b8;text-align:center;">
+              W.V. Construction is the trading name of ACOR Building and Property Solutions Ltd | Company Registration Number: 9287377
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="invoice-sidebar">
+          <div class="action-panel">
+            <h4>Actions</h4>
+            <button class="btn btn-primary" onclick="sendByEmail('j.thornton@email.com','Julie Thornton','Q-A1B2C3D4',2850)">&#128231; Send Quote</button>
+            <button class="btn btn-success" onclick="toast('Quote marked as accepted &#10003;')">&#10003; Mark as Accepted</button>
+            <button class="btn btn-outline" onclick="downloadPDF()">&#8659; Download PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== INVOICE TOM PAGE ==================== -->
+<div class="page" id="page-invoice-tom">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">&#8592; Back to list</a>
+      <div class="invoice-layout">
+        <div class="invoice-main">
+          <div class="card">
+            <div class="card-body">
+              <div style="border-bottom:3px solid #0f172a;padding-bottom:16px;margin-bottom:24px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <div style="font-size:26px;font-weight:900;color:#0f172a;letter-spacing:-0.5px;text-transform:uppercase;">W.V. Construction</div>
+                  <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;">Renovation / Conversion / Refurbishment</div>
+                </div>
+                <div style="text-align:right;font-size:12px;color:#64748b;line-height:1.7;">
+                  <div>20 Ripon Road, Wallasey, Merseyside, CH45 6TR</div>
+                  <div>Mob: 07966 978824 | Tel: 0151 200 1341</div>
+                  <div>Email: antonycor@hotmail.co.uk</div>
+                </div>
+              </div>
+            </div>
+              <div class="invoice-header-row">
+                <div class="invoice-title-block">
+                  <div class="ref">INV-F9E8D7C6</div>
+                  <h2>Garage conversion to office</h2>
+                  <div class="invoice-badges">
+                    <span class="badge badge-grey">Invoice</span>
+                    <span class="badge badge-paid" id="tom-status-badge">Paid</span>
+                  </div>
+                </div>
+              </div>
+              <div class="invoice-meta-grid">
+                <div class="invoice-meta-block">
+                  <label>Customer</label>
+                  <div class="value">Tom Bradley</div>
+                  <div class="value-sub">t.bradley@email.com</div>
+                  <div class="value-sub">07833 112233</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Address</label>
+                  <div class="value">8 Brookside Close, Liverpool L18 2AB</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Invoice Date</label>
+                  <div class="value">5 Feb 2025</div>
+                </div>
+                <div class="invoice-meta-block">
+                  <label>Payment Date</label>
+                  <div class="value">18 Feb 2025</div>
+                </div>
+              </div>
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Garage conversion — structural works &amp; insulation</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">&#163;3,500.00</td>
+                    <td class="text-right">&#163;3,500.00</td>
+                  </tr>
+                  <tr>
+                    <td>Electrical first &amp; second fix</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">&#163;1,200.00</td>
+                    <td class="text-right">&#163;1,200.00</td>
+                  </tr>
+                  <tr>
+                    <td>Plastering &amp; decoration</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">&#163;900.00</td>
+                    <td class="text-right">&#163;900.00</td>
+                  </tr>
+                  <tr>
+                    <td>Flooring (engineered oak, 20m&#178;)</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">&#163;400.00</td>
+                    <td class="text-right">&#163;400.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="totals-block">
+                <div class="totals-row"><span>Subtotal</span><span>&#163;6,000.00</span></div>
+                <div class="totals-row"><span>VAT (20%)</span><span>&#163;1,200.00</span></div>
+                <div class="totals-row total"><span>Total</span><span>&#163;7,200.00</span></div>
+              </div>
+              <div class="alert alert-green" style="margin-top:16px;">
+                &#10003; Payment received on 18 Feb 2025 — Thank you!
+              </div>
+              <div style="margin-top:24px;padding-top:12px;border-top:1px solid #e2e8f0;font-size:11px;color:#94a3b8;text-align:center;">
+              W.V. Construction is the trading name of ACOR Building and Property Solutions Ltd | Company Registration Number: 9287377
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="invoice-sidebar">
+          <div class="action-panel">
+            <h4>Actions</h4>
+            <button class="btn btn-disabled" disabled>&#10003; Paid</button>
+            <button class="btn btn-outline" onclick="downloadPDF()">&#8659; Download PDF</button>
+            <button class="btn btn-outline" onclick="toast('Reminder sent to t.bradley@email.com &#10003;')">&#128231; Send Receipt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SAVED QUOTE PAGE ==================== -->
+<div class="page" id="page-saved-quote">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a class="active" onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('quotes-list')">&#8592; Back to list</a>
+      <div class="invoice-layout">
+        <div class="invoice-main">
+          <div class="card">
+            <div class="card-body" id="saved-quote-body">
+              <!-- Populated by renderSavedQuote() -->
+            </div>
+          </div>
+        </div>
+        <div class="invoice-sidebar">
+          <div class="action-panel">
+            <h4>Actions</h4>
+            <button class="btn btn-primary" id="saved-send-btn" onclick="sendSavedQuoteByEmail()">&#128231; Send Quote</button>
+            <button class="btn btn-success" onclick="toast('Quote marked as accepted &#10003;')">&#10003; Mark as Accepted</button>
+            <button class="btn btn-outline" onclick="downloadPDF()">&#8659; Download PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== OUTSTANDING PAGE ==================== -->
+<div class="page" id="page-outstanding">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a class="active" onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Outstanding Invoices</div>
+          <div class="page-subtitle">Invoices sent to customers awaiting payment — manage cash receipts and send reminders.</div>
+        </div>
+      </div>
+      <div id="outstanding-list">
+        <!-- Rendered by renderOutstandingPage() -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI GENERATION PAGE ===== -->
+<div class="page" id="page-ai-generation">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a class="active" onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">AI Generation</div>
+          <div class="page-subtitle">Take a photo and describe your vision — AI will generate three brief options for you to choose from.</div>
+        </div>
+      </div>
+
+      <!-- Camera card -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-body">
+          <div style="font-weight:600;font-size:15px;color:#0f172a;margin-bottom:12px;">📷 Site Photo</div>
+          <div id="ai-camera-wrap" style="position:relative;width:100%;max-width:560px;background:#0f172a;border-radius:10px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;">
+            <video id="ai-video" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+            <canvas id="ai-canvas" style="width:100%;height:100%;object-fit:cover;display:none;"></canvas>
+            <div id="ai-camera-placeholder" style="color:#94a3b8;text-align:center;padding:24px;">
+              <div style="font-size:40px;margin-bottom:8px;">📷</div>
+              <div style="font-size:14px;">Camera will appear here</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" id="ai-start-btn" onclick="aiStartCamera()">📷 Open Camera</button>
+            <button class="btn btn-sm" id="ai-capture-btn" style="display:none;background:#0f172a;color:#fff;border-color:#0f172a;" onclick="aiCapture()">⚫ Capture Photo</button>
+            <button class="btn btn-outline btn-sm" id="ai-retake-btn" style="display:none;" onclick="aiRetake()">↩ Retake</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description card -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-body">
+          <div style="font-weight:600;font-size:15px;color:#0f172a;margin-bottom:10px;">✏️ Describe Your Vision</div>
+          <textarea id="ai-description" class="form-control" rows="4" placeholder="e.g. Open-plan kitchen diner with bifold doors onto the garden, marble worktops, and a large central island…" style="resize:vertical;font-size:14px;"></textarea>
+        </div>
+      </div>
+
+      <!-- Generate button -->
+      <div style="margin-bottom:20px;">
+        <button class="btn btn-primary" onclick="aiGenerateVariations()" id="ai-generate-btn">🤖 Generate Variations</button>
+      </div>
+
+      <!-- Variations (hidden until generated) -->
+      <div id="ai-variations-wrap" style="display:none;">
+        <div style="font-weight:700;font-size:16px;color:#0f172a;margin-bottom:14px;">Choose a Variation</div>
+        <div id="ai-variations-list" style="display:flex;flex-direction:column;gap:14px;"></div>
+        <div style="margin-top:20px;">
+          <button class="btn btn-primary" onclick="aiProceedToFinalise()">Next → Finalise</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI FINALISE PAGE ===== -->
+<div class="page" id="page-ai-finalise">
+  <div class="app-shell">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏗️</div>
+        <div class="logo-text">W.V. Construction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</a>
+        <a onclick="navigate('quotes-list')"><span class="nav-icon">📄</span> Quotes &amp; Invoices</a>
+        <a onclick="navigate('outstanding')"><span class="nav-icon">⏳</span> Outstanding</a>
+        <a onclick="navigate('customers')"><span class="nav-icon">👥</span> Customers</a>
+        <a class="active" onclick="navigate('ai-generation')"><span class="nav-icon">🤖</span> AI Generation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a onclick="navigate('login')"><span class="nav-icon">🚪</span> Sign out</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <a class="back-link" onclick="navigate('ai-generation')">← Back to generation</a>
+      <div class="page-header">
+        <div>
+          <div class="page-title">Finalise Brief</div>
+          <div class="page-subtitle">Review your selected description and add any final comments before saving.</div>
+        </div>
+      </div>
+
+      <!-- Captured photo (if any) -->
+      <div id="ai-final-photo-wrap" style="display:none;margin-bottom:20px;">
+        <div class="card">
+          <div class="card-body" style="padding:14px;">
+            <div style="font-weight:600;font-size:13px;color:#64748b;margin-bottom:8px;">Site Photo</div>
+            <img id="ai-final-photo" src="" alt="Site photo" style="width:100%;max-width:400px;border-radius:8px;display:block;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected description -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-body">
+          <div style="font-weight:600;font-size:15px;color:#0f172a;margin-bottom:10px;">Selected Description</div>
+          <div id="ai-final-selected" style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px;font-size:14px;color:#0c4a6e;line-height:1.65;"></div>
+        </div>
+      </div>
+
+      <!-- Additional comments -->
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-body">
+          <div style="font-weight:600;font-size:15px;color:#0f172a;margin-bottom:10px;">Additional Comments</div>
+          <textarea id="ai-final-comments" class="form-control" rows="5" placeholder="Add any further instructions, constraints, or preferences here…" style="resize:vertical;font-size:14px;"></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="aiSaveFinal()">✓ Confirm &amp; Save Brief</button>
+        <button class="btn btn-outline" onclick="navigate('ai-generation')">← Back</button>
+      </div>
+
+      <!-- Saved confirmation (hidden until saved) -->
+      <div id="ai-saved-confirm" style="display:none;margin-top:24px;" class="alert alert-green">
+        ✓ Brief saved successfully. You can now use this to create a quote.
+        <div style="margin-top:10px;">
+          <button class="btn btn-primary btn-sm" onclick="navigate('new-quote')">→ Create a New Quote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

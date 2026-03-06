@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 157 59% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 15% 95%;
+    --secondary-foreground: 210 10% 30%;
+    --muted: 210 15% 95%;
+    --muted-foreground: 210 10% 45%;
+    --accent: 210 15% 93%;
+    --accent-foreground: 210 10% 25%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 157 59% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --border: 210 15% 90%;
+    --input: 210 15% 90%;
+    --ring: 157 59% 40%;
+    --radius: 0.625rem;
+    --sidebar: 210 20% 10%;
+    --sidebar-foreground: 210 15% 85%;
+    --sidebar-accent: 157 59% 40%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-muted: 210 15% 18%;
+    --sidebar-border: 210 15% 16%;
+  }
+
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Reusable card */
+  .card {
+    @apply bg-card text-card-foreground rounded-xl border border-border shadow-sm;
+  }
+  /* Form field label */
+  .form-label {
+    @apply block text-sm font-medium text-foreground mb-1.5;
+  }
+  /* Form field input */
+  .form-input {
+    @apply block w-full rounded-[var(--radius)] border border-input bg-card px-3.5 py-2.5 text-sm
+           text-foreground shadow-sm placeholder:text-muted-foreground
+           focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring
+           disabled:bg-muted disabled:text-muted-foreground;
+  }
+  /* Section divider */
+  .section-divider {
+    @apply border-t border-border my-6;
+  }
+}
